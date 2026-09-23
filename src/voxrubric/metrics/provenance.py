@@ -41,8 +41,11 @@ class EvidenceProvenanceMetric(Metric):
                 confidence = item.get("confidence")
                 note = item.get("note")
                 source = item.get("source")
+                active = item.get("active", True)
 
                 item_problems: list[str] = []
+                if not isinstance(active, bool):
+                    item_problems.append("active flag is not boolean")
                 turn = known_turns.get(turn_id)
                 if turn is None:
                     item_problems.append("unknown turn")
@@ -61,9 +64,14 @@ class EvidenceProvenanceMetric(Metric):
                 if quote is not None:
                     if not isinstance(quote, str):
                         item_problems.append("quote is not a string")
-                    elif turn is not None and quote not in turn.text:
+                    elif (
+                        active is True
+                        and turn is not None
+                        and quote not in turn.text
+                    ):
                         item_problems.append(
-                            "quote is not a literal substring of the referenced turn"
+                            "active evidence quote is not a literal substring "
+                            "of the referenced turn"
                         )
 
                 if item_problems:
