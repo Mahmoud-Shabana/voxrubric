@@ -330,3 +330,222 @@ class BargeInRecoveryMetric(Metric):
                 "failures": failures,
             },
         )
+
+
+
+class VoiceTransportContinuityMetric(Metric):
+    """Validate server/browser voice transport selection and fallback recovery."""
+
+    name = "voice_transport_continuity"
+
+    def evaluate(
+        self,
+        trace: InterviewTrace,
+        rubric: Rubric,
+    ) -> MetricResult:
+        events = _events(trace)
+        telemetry = [
+            event
+            for event in events
+            if str(event.get("type", "")) in {
+                "voice_provider_failed",
+                "voice_transport_selected",
+                "voice_transport_fallback",
+            }
+        ]
+        if not telemetry:
+            return MetricResult(
+                metric=self.name,
+                summary="Trace does not expose voice transport telemetry.",
+                details={"applicable": False},
+            )
+
+        selections: list[tuple[int, str, str, str | None]] = []
+        failures: list[tuple[int, str, str | None]] = []
+        fallbacks: list[tuple[int, str, str, str]] = []
+        problems: list[str] = []
+
+        for event in telemetry:
+            seq = int(event.get("seq", 0) or 0)
+            event_type = str(event.get("type", ""))
+            payload = _payload(event)
+            direction = payload.get("direction")
+
+            if direction not in {"stt", "tts"}:
+                problems.append(
+                    f"{event_type} at seq {seq} has invalid direction"
+                )
+                continue
+
+            if event_type == "voice_transport_selected":
+                transport = payload.get("transport")
+                provider_id = payload.get("provider_id")
+                if transport not in {"server", "browser"}:
+                    problems.append(
+                        f"transport selection at seq {seq} has invalid transport"
+                    )
+                    continue
+                if (
+                    transport == "server"
+                    and (
+                        not isinstance(provider_id, str)
+                        or not provider_id
+                    )
+                ):
+                    problems.append(
+                        f"server transport selection at seq {seq} "
+                        "is missing provider_id"
+                    )
+                    continue
+                selections.append(
+                    (
+                        seq,
+                        direction,
+                        transport,
+                        (
+                            provider_id
+                            if isinstance(provider_id, str)
+                            else None
+                        ),
+                    )
+                )
+                continue
+
+            if event_type == "voice_provider_failed":
+                provider_id = payload.get("provider_id")
+                failures.append(
+                    (
+                        seq,
+                        direction,
+                        (
+                            provider_id
+                            if isinstance(provider_id, str)
+                            else None
+                        ),
+                    )
+                )
+                if (
+                    not isinstance(payload.get("error_type"), str)
+                    or not payload.get("error_type")
+                ):
+                    problems.append(
+                        f"provider failure at seq {seq} is missing error_type"
+                    )
+                continue
+
+            from_transport = payload.get("from_transport")
+            to_transport = payload.get("to_transport")
+            if (
+                from_transport not in {"server", "browser"}
+                or to_transport not in {"server", "browser"}
+                or from_transport == to_transport
+            ):
+                problems.append(
+                    f"fallback at seq {seq} has invalid transport transition"
+                )
+                continue
+            fallbacks.append(
+                (
+                    seq,
+                    direction,
+                    from_transport,
+                    to_transport,
+                )
+            )
+
+        recovered_fallbacks = 0
+        for seq, direction, _, to_transport in fallbacks:
+            later_selection = next(
+                (
+                    selection
+                    for selection in selections
+                    if (
+                        selection[0] > seq
+                        and selection[1] == direction
+                        and selection[2] == to_transport
+                    )
+                ),
+                None,
+            )
+            if later_selection is None:
+                problems.append(
+                    f"{direction} fallback at seq {seq} has no later "
+                    f"{to_transport} transport selection"
+                )
+            else:
+                recovered_fallbacks += 1
+
+        for seq, direction, _ in failures:
+            later_fallback = next(
+                (
+                    fallback
+                    for fallback in fallbacks
+                    if (
+                        fallback[0] > seq
+                        and fallback[1] == direction
+                    )
+                ),
+                None,
+            )
+            if later_fallback is None:
+                problems.append(
+                    f"{direction} provider failure at seq {seq} "
+                    "has no recorded transport fallback"
+                )
+
+        if fallbacks:
+            value = (
+                recovered_fallbacks
+                / len(fallbacks)
+            )
+            unit = "recovered_fallback_ratio"
+        else:
+            value = 1.0
+            unit = "transport_continuity_ratio"
+
+        by_direction: dict[str, dict[str, int]] = {}
+        for direction in ("stt", "tts"):
+            by_direction[direction] = {
+                "server_selections": sum(
+                    item[1] == direction
+                    and item[2] == "server"
+                    for item in selections
+                ),
+                "browser_selections": sum(
+                    item[1] == direction
+                    and item[2] == "browser"
+                    for item in selections
+                ),
+                "provider_failures": sum(
+                    item[1] == direction
+                    for item in failures
+                ),
+                "fallbacks": sum(
+                    item[1] == direction
+                    for item in fallbacks
+                ),
+            }
+
+        return MetricResult(
+            metric=self.name,
+            value=round(value, 4),
+            unit=unit,
+            passed=not problems,
+            summary=(
+                f"{recovered_fallbacks}/{len(fallbacks)} recorded "
+                "voice fallbacks reached the selected replacement transport."
+                if fallbacks
+                else (
+                    "Voice transport telemetry contains no fallback events "
+                    "requiring recovery."
+                )
+            ),
+            details={
+                "selections": len(selections),
+                "provider_failures": len(failures),
+                "fallbacks": len(fallbacks),
+                "recovered_fallbacks": recovered_fallbacks,
+                "by_direction": by_direction,
+                "problems": problems,
+            },
+        )
