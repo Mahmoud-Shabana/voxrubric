@@ -16,7 +16,7 @@ class EvidenceProvenanceMetric(Metric):
                 details={"applicable": False},
             )
 
-        known_turns = {turn.id for turn in trace.turns}
+        known_turns = {turn.id: turn for turn in trace.turns}
         total = 0
         valid = 0
         problems: list[str] = []
@@ -43,7 +43,8 @@ class EvidenceProvenanceMetric(Metric):
                 source = item.get("source")
 
                 item_problems: list[str] = []
-                if turn_id not in known_turns:
+                turn = known_turns.get(turn_id)
+                if turn is None:
                     item_problems.append("unknown turn")
                 if state not in {
                     "claimed", "demonstrated", "verified",
@@ -55,6 +56,15 @@ class EvidenceProvenanceMetric(Metric):
                 if source == "evaluator":
                     if not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
                         item_problems.append("invalid evaluator confidence")
+
+                quote = item.get("quote")
+                if quote is not None:
+                    if not isinstance(quote, str):
+                        item_problems.append("quote is not a string")
+                    elif turn is not None and quote not in turn.text:
+                        item_problems.append(
+                            "quote is not a literal substring of the referenced turn"
+                        )
 
                 if item_problems:
                     problems.append(
