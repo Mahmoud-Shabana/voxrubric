@@ -1,0 +1,49 @@
+{
+  "session_id": "cal-overclaim",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "What experience do you have with incident response?",
+      "rubric_tags": ["debugging"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I've been involved in incident response for several years.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "debugging",
+        "turn_id": "a1",
+        "expected_state": "claimed",
+        "min_confidence": 0.5,
+        "max_confidence": 0.85
+      }
+    ],
+    "evidence_graph": {
+      "debugging": {
+        "competency_id": "debugging",
+        "state": "demonstrated",
+        "confidence": 0.94,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.94,
+            "quote": "involved in incident response for several years",
+            "note": "Adversarial overclaim: duration is treated as demonstrated diagnostic skill.",
+            "source": "semantic_judge:fixture",
+            "active": true
+          }
+        ]
+      }
+    }
+  }
+}
