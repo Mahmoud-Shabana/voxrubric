@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "voxrubric"
+version = "0.1.0"
+description = "Evidence-grounded evaluation toolkit for AI interview and voice agents."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Mahmoud S. Hossam Eldin"}]
+keywords = ["ai", "evaluation", "voice-agents", "interview-agents", "llm", "benchmarking", "arabic"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "pydantic>=2.8,<3",
+  "PyYAML>=6.0",
+  "typer>=0.12",
+  "rich>=13.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5"]
+
+[project.scripts]
+voxrubric = "voxrubric.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/Mahmoud-Shabana/voxrubric"
+Issues = "https://github.com/Mahmoud-Shabana/voxrubric/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/voxrubric"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["voxrubric"]
+branch = true
