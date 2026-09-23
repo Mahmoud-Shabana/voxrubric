@@ -1,0 +1,44 @@
+id: semantic-evidence-freshness-v1
+title: Semantic Evidence Freshness and Versioning Pack
+cases:
+  - id: stale-after-correction
+    description: A judge run tied to an older transcript revision must be treated as stale after candidate correction.
+    trace: stale-after-correction.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_judge_integrity
+        passed: false
+      - metric: evidence_provenance
+        min_value: 1.0
+        passed: true
+
+  - id: failed-latest-run
+    description: The newest semantic judge run cannot silently fail while the trace remains semantically healthy.
+    trace: failed-latest-run.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_judge_integrity
+        passed: false
+
+  - id: superseded-history-valid
+    description: Historical evidence may remain preserved after correction when it is inactive and a fresh run supersedes it.
+    trace: superseded-history-valid.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
+      - metric: evidence_provenance
+        min_value: 1.0
+        passed: true
+      - metric: semantic_evidence_calibration
+        min_value: 1.0
+        passed: true
+
+  - id: active-fabricated-quote
+    description: Active semantic evidence cannot cite words absent from the current candidate answer.
+    trace: ../adversarial/semantic-fabricated-quote.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_judge_integrity
+        passed: false
