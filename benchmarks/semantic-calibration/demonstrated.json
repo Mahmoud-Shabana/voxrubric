@@ -1,0 +1,49 @@
+{
+  "session_id": "cal-demonstrated",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "Tell me how you diagnosed a production latency regression.",
+      "rubric_tags": ["debugging"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I reproduced the regression under the same load, compared request traces and database metrics, isolated one slow query, then verified the fix with the original load test.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "debugging",
+        "turn_id": "a1",
+        "expected_state": "demonstrated",
+        "min_confidence": 0.8,
+        "max_confidence": 0.98
+      }
+    ],
+    "evidence_graph": {
+      "debugging": {
+        "competency_id": "debugging",
+        "state": "demonstrated",
+        "confidence": 0.91,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.91,
+            "quote": "compared request traces and database metrics",
+            "note": "The answer describes concrete diagnostic actions and verification.",
+            "source": "semantic_judge:fixture",
+            "active": true
+          }
+        ]
+      }
+    }
+  }
+}
