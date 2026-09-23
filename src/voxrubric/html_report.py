@@ -142,6 +142,16 @@ def _agent_card(item: AgentArenaAggregate) -> str:
 def _metric_rows(item: AgentArenaAggregate) -> str:
     rows: list[str] = []
     for metric in item.metrics:
+        stddev = (
+            "—"
+            if metric.standard_deviation is None
+            else f"{metric.standard_deviation:.4f}"
+        )
+        ci95 = (
+            "—"
+            if metric.ci95_low is None or metric.ci95_high is None
+            else f"[{metric.ci95_low:.4f}, {metric.ci95_high:.4f}]"
+        )
         rows.append(
             "<tr>"
             f"<td class='code'>{escape(metric.metric)}</td>"
@@ -149,11 +159,13 @@ def _metric_rows(item: AgentArenaAggregate) -> str:
             f"<td>{metric.mean:.4f}</td>"
             f"<td>{metric.minimum:.4f}</td>"
             f"<td>{metric.maximum:.4f}</td>"
+            f"<td>{stddev}</td>"
+            f"<td>{ci95}</td>"
             "</tr>"
         )
     if not rows:
         rows.append(
-            "<tr><td colspan='5' class='muted'>No numeric metric samples.</td></tr>"
+            "<tr><td colspan='7' class='muted'>No numeric metric samples.</td></tr>"
         )
     return "".join(rows)
 
@@ -205,6 +217,8 @@ def render_arena_html(result: ArenaResult) -> str:
                       <th>Mean</th>
                       <th>Min</th>
                       <th>Max</th>
+                      <th>Std dev</th>
+                      <th>95% bootstrap CI</th>
                     </tr>
                   </thead>
                   <tbody>{_metric_rows(item)}</tbody>
