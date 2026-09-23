@@ -1,0 +1,49 @@
+{
+  "session_id": "cal-claimed",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "What experience do you have operating Redis?",
+      "rubric_tags": ["reliability"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I've worked with Redis for five years.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "reliability",
+        "turn_id": "a1",
+        "expected_state": "claimed",
+        "min_confidence": 0.55,
+        "max_confidence": 0.85
+      }
+    ],
+    "evidence_graph": {
+      "reliability": {
+        "competency_id": "reliability",
+        "state": "claimed",
+        "confidence": 0.72,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "claimed",
+            "confidence": 0.72,
+            "quote": "worked with Redis for five years",
+            "note": "Experience is asserted but no behavior or outcome is demonstrated.",
+            "source": "semantic_judge:fixture",
+            "active": true
+          }
+        ]
+      }
+    }
+  }
+}
