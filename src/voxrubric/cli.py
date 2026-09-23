@@ -6,6 +6,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from .benchmark import run_suite
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
 from .report import to_markdown
@@ -42,6 +43,28 @@ def evaluate(
         else:
             raise typer.BadParameter("--out must end in .json or .md")
         console.print(f"Wrote {output}")
+
+
+@app.command("benchmark")
+def benchmark(
+    suite: Path = typer.Argument(..., exists=True, readable=True, help="Benchmark suite YAML."),
+    latency_budget_ms: int = typer.Option(2000, min=1),
+    output: Path | None = typer.Option(None, "--out", help="Optional JSON result path."),
+) -> None:
+    result = run_suite(suite, latency_budget_ms=latency_budget_ms)
+    table = Table(title=f"VoxRubric benchmark — {result.suite_id}")
+    table.add_column("Case")
+    table.add_column("Status")
+    table.add_column("Failures")
+    for case in result.cases:
+        table.add_row(case.case_id, "PASS" if case.passed else "FAIL", "\n".join(case.failures) or "—")
+    console.print(table)
+    console.print(f"Suite status: {'PASS' if result.passed else 'FAIL'}")
+    if output:
+        output.write_text(result.model_dump_json(indent=2), encoding="utf-8")
+        console.print(f"Wrote {output}")
+    if not result.passed:
+        raise typer.Exit(code=1)
 
 
 @app.command("validate-dataset")
