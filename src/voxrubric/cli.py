@@ -13,6 +13,7 @@ from .html_report import (
     write_arena_html,
     write_benchmark_html,
     write_evaluation_html,
+    write_trace_diff_html,
 )
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
@@ -178,6 +179,11 @@ def diff(
         "--out",
         help="Optional JSON diff result path.",
     ),
+    html_output: Path | None = typer.Option(
+        None,
+        "--html-out",
+        help="Optional self-contained HTML diff report path.",
+    ),
     latency_budget_ms: int = typer.Option(
         2000,
         min=1,
@@ -250,6 +256,13 @@ def diff(
             encoding="utf-8",
         )
         console.print(f"Wrote {output}")
+
+    if html_output:
+        write_trace_diff_html(
+            result,
+            html_output,
+        )
+        console.print(f"Wrote {html_output}")
 
 
 @app.command("review-bundle")
