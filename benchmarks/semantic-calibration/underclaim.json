@@ -1,0 +1,49 @@
+{
+  "session_id": "cal-underclaim",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "How did you make a flaky dependency safer in production?",
+      "rubric_tags": ["reliability"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I added bounded retries with jitter, introduced an idempotency key, instrumented retry outcomes, and reduced duplicate writes during the next rollout.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "reliability",
+        "turn_id": "a1",
+        "expected_state": "demonstrated",
+        "min_confidence": 0.8,
+        "max_confidence": 0.98
+      }
+    ],
+    "evidence_graph": {
+      "reliability": {
+        "competency_id": "reliability",
+        "state": "claimed",
+        "confidence": 0.62,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "claimed",
+            "confidence": 0.62,
+            "quote": "added bounded retries with jitter",
+            "note": "Adversarial underclaim: concrete implementation evidence is reduced to a mere claim.",
+            "source": "semantic_judge:fixture",
+            "active": true
+          }
+        ]
+      }
+    }
+  }
+}
