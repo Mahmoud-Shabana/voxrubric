@@ -22,6 +22,11 @@ from .models import (
     Speaker,
     Turn,
 )
+from .review_bundle import (
+    ReviewBundleAuditResult,
+    audit_review_bundle,
+    load_review_bundle,
+)
 from .runner import Evaluator, default_evaluator
 
 __all__ = [
@@ -39,13 +44,16 @@ __all__ = [
     "JudgeEnsemble",
     "MetricAggregate",
     "MetricResult",
+    "ReviewBundleAuditResult",
     "Rubric",
     "RubricDimension",
     "ScriptedAgentFactory",
     "ScriptedQuestion",
     "Speaker",
     "Turn",
+    "audit_review_bundle",
     "default_evaluator",
+    "load_review_bundle",
 ]
 
 __version__ = "0.4.0"
