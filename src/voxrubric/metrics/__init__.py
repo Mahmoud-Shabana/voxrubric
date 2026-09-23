@@ -11,6 +11,7 @@ from .latency import LatencyMetric
 from .provenance import EvidenceProvenanceMetric
 from .semantic_judge import SemanticJudgeIntegrityMetric
 from .tools import ToolArtifactIntegrityMetric
+from .traceability import AuditCorrelationIntegrityMetric
 from .voice import (
     BargeInRecoveryMetric,
     VoiceEventIntegrityMetric,
@@ -20,6 +21,7 @@ from .voice import (
 
 __all__ = [
     "AuditChainIntegrityMetric",
+    "AuditCorrelationIntegrityMetric",
     "BargeInRecoveryMetric",
     "CandidateControlRecoveryMetric",
     "CodeSwitchMetric",
