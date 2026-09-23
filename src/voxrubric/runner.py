@@ -19,6 +19,7 @@ from .metrics import (
     ToolArtifactIntegrityMetric,
     VoiceEventIntegrityMetric,
     VoiceLatencyBreakdownMetric,
+    VoiceTransportContinuityMetric,
 )
 from .metrics.base import Metric
 from .models import EvaluationReport, InterviewTrace, Rubric
@@ -58,6 +59,7 @@ def default_evaluator(*, latency_budget_ms: int = 2000) -> Evaluator:
             ToolArtifactIntegrityMetric(),
             VoiceEventIntegrityMetric(),
             VoiceLatencyBreakdownMetric(),
+            VoiceTransportContinuityMetric(),
             BargeInRecoveryMetric(),
         ]
     )
