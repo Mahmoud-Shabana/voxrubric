@@ -24,3 +24,4 @@ jobs:
       - run: pytest --cov=voxrubric --cov-report=term-missing
       - run: voxrubric eval --trace examples/session.json --rubric examples/python_engineer.yaml --out report.json
       - run: voxrubric benchmark benchmarks/adversarial/suite.yaml --out benchmark-result.json
+      - run: voxrubric arena examples/arena.yaml --out arena-result.json
