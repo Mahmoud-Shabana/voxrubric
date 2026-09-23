@@ -1,0 +1,1 @@
+{"session_id":"smoke-1","role":"Support Agent","locale":"en","turns":[{"id":"q1","speaker":"interviewer","text":"Tell me about a difficult customer situation.","rubric_tags":["communication"]},{"id":"a1","speaker":"candidate","text":"I clarified the issue, confirmed the requested outcome, and documented the resolution."}],"scorecards":[]}
