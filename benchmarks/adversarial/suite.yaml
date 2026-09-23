@@ -53,3 +53,12 @@ cases:
       - metric: response_latency
         min_value: 4000
         passed: false
+
+  - id: semantic-fabricated-quote
+    description: A semantic evidence judge must fail if it cites a literal quote that is absent from the referenced answer.
+    trace: semantic-fabricated-quote.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_judge_integrity
+        max_value: 0.0
+        passed: false
