@@ -1,0 +1,20 @@
+id: senior-python-v1
+title: Senior Python Engineer
+
+dimensions:
+  - id: python_core
+    description: Demonstrates accurate knowledge of Python semantics and runtime behavior.
+    weight: 1.2
+    required: true
+  - id: concurrency
+    description: Can reason about async I/O, blocking work, race conditions, and concurrency trade-offs.
+    weight: 1.4
+    required: true
+  - id: debugging
+    description: Uses a structured debugging method and validates hypotheses with evidence.
+    weight: 1.0
+    required: true
+  - id: communication
+    description: Explains technical decisions clearly and distinguishes facts from assumptions.
+    weight: 0.8
+    required: true
