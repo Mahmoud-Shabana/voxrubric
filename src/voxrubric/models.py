@@ -101,6 +101,13 @@ class InterviewTrace(StrictModel):
         return self
 
 
+class AgentUtterance(StrictModel):
+    text: str
+    rubric_tags: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    completes_interview: bool = False
+
+
 class MetricResult(StrictModel):
     metric: str
     value: float | None = None
