@@ -28,7 +28,7 @@ VoxRubric makes those failures explicit and machine-testable.
 5. **Arabic/English is first-class.** Code-switched speech is represented in the benchmark schema rather than treated as an edge case.
 6. **Human decision ownership.** The toolkit measures system behavior; it is not an autonomous hiring authority.
 
-## What ships in v0.1
+## What ships in v0.2
 
 | Capability | What it measures |
 |---|---|
@@ -47,6 +47,9 @@ voxrubric eval \
   --trace examples/session.json \
   --rubric examples/python_engineer.yaml \
   --out report.md
+
+# Run the bundled adversarial regression pack
+voxrubric benchmark benchmarks/adversarial/suite.yaml
 ```
 
 Python API:
@@ -62,6 +65,14 @@ report = default_evaluator(latency_budget_ms=1800).run(trace, rubric)
 for metric in report.metrics:
     print(metric.metric, metric.value, metric.passed)
 ```
+
+## Benchmark suites
+
+VoxRubric can assert that known-good traces pass **and** known-bad traces fail for the expected reason.
+
+The bundled adversarial suite covers fabricated evidence, missing competency coverage, broken follow-up lineage, excessive latency, and a bilingual grounded control. See `docs/BENCHMARKING.md`.
+
+Synthetic candidate personas are also available for deterministic regression fixtures with configurable skill level and answer style.
 
 ## Trace schema
 
@@ -146,8 +157,8 @@ For real hiring deployments, keep a human accountable for the decision, document
 ## Roadmap
 
 - [ ] `JudgeProvider` reference adapters for hosted and local models
-- [ ] adversarial evidence-grounding cases
-- [ ] synthetic candidate simulator with controllable skill profiles
+- [x] adversarial evidence-grounding cases
+- [x] deterministic synthetic candidate simulator with controllable skill profiles
 - [ ] semantic follow-up quality evaluator
 - [ ] ASR preservation tests for Arabic/English technical vocabulary
 - [ ] interruption / barge-in / recovery benchmark
