@@ -1,0 +1,20 @@
+{
+  "session_id": "adv-grounded",
+  "role": "Python Engineer",
+  "locale": "ar-SA",
+  "turns": [
+    {"id":"q1","speaker":"interviewer","text":"Describe a Python production issue.","response_latency_ms":500,"rubric_tags":["python"]},
+    {"id":"a1","speaker":"candidate","text":"اشتغلت على FastAPI service وكان فيه blocking call، فعملت profiling ونقلت الشغل إلى worker pool."},
+    {"id":"q2","speaker":"interviewer","text":"How did you verify the diagnosis?","parent_turn_id":"a1","response_latency_ms":700,"rubric_tags":["debugging"]},
+    {"id":"a2","speaker":"candidate","text":"I compared event-loop lag and request latency before and after the change under the same load."}
+  ],
+  "scorecards": [
+    {
+      "judge_id":"judge-a",
+      "dimensions":[
+        {"dimension":"python","score":8,"evidence":[{"turn_id":"a1","quote":"blocking call"}]},
+        {"dimension":"debugging","score":8,"evidence":[{"turn_id":"a2","quote":"event-loop lag and request latency"}]}
+      ]
+    }
+  ]
+}
