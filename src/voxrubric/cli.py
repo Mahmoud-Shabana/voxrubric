@@ -19,6 +19,7 @@ from .datasets import load_jsonl
 from .report import to_markdown
 from .review_bundle import audit_review_bundle, load_review_bundle
 from .runner import default_evaluator
+from .trace_diff import compare_traces
 
 app = typer.Typer(help="Evidence-grounded evaluation for AI interview and voice agents.", no_args_is_help=True)
 console = Console()
@@ -148,6 +149,107 @@ def arena(
             html_output,
         )
         console.print(f"Wrote {html_output}")
+
+
+@app.command("diff")
+def diff(
+    left: Path = typer.Option(
+        ...,
+        "--left",
+        exists=True,
+        readable=True,
+        help="Baseline interview trace JSON/YAML.",
+    ),
+    right: Path = typer.Option(
+        ...,
+        "--right",
+        exists=True,
+        readable=True,
+        help="Comparison interview trace JSON/YAML.",
+    ),
+    rubric: Path = typer.Option(
+        ...,
+        exists=True,
+        readable=True,
+        help="Rubric JSON/YAML.",
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional JSON diff result path.",
+    ),
+    latency_budget_ms: int = typer.Option(
+        2000,
+        min=1,
+    ),
+) -> None:
+    evaluator = default_evaluator(
+        latency_budget_ms=latency_budget_ms
+    )
+    result = compare_traces(
+        load_trace(left),
+        load_trace(right),
+        load_rubric(rubric),
+        evaluator=evaluator,
+    )
+
+    console.print(
+        f"Question-path similarity: "
+        f"{result.question_path_similarity:.3f}"
+    )
+    console.print(
+        f"Follow-up action agreement: "
+        f"{result.followup_action_agreement:.3f}"
+    )
+
+    table = Table(
+        title=(
+            f"VoxRubric diff — "
+            f"{result.left_session_id} → {result.right_session_id}"
+        )
+    )
+    table.add_column("Metric")
+    table.add_column("Left", justify="right")
+    table.add_column("Right", justify="right")
+    table.add_column("Δ", justify="right")
+    table.add_column("Status change")
+    for item in result.metric_deltas:
+        left_value = (
+            "—"
+            if item.left_value is None
+            else f"{item.left_value:g}"
+        )
+        right_value = (
+            "—"
+            if item.right_value is None
+            else f"{item.right_value:g}"
+        )
+        delta = (
+            "—"
+            if item.delta is None
+            else f"{item.delta:+g}"
+        )
+        status_change = (
+            f"{item.left_passed} → {item.right_passed}"
+        )
+        table.add_row(
+            item.metric,
+            left_value,
+            right_value,
+            delta,
+            status_change,
+        )
+    console.print(table)
+    console.print(
+        "Diff is descriptive; it does not select a better interview agent."
+    )
+
+    if output:
+        output.write_text(
+            result.model_dump_json(indent=2),
+            encoding="utf-8",
+        )
+        console.print(f"Wrote {output}")
 
 
 @app.command("review-bundle")
