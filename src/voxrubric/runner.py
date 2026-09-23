@@ -19,6 +19,7 @@ from .metrics import (
     SemanticEvidenceCalibrationMetric,
     SemanticJudgeIntegrityMetric,
     ToolArtifactIntegrityMetric,
+    VoiceEndpointingRecoveryMetric,
     VoiceEventIntegrityMetric,
     VoiceLatencyBreakdownMetric,
     VoiceTransportContinuityMetric,
@@ -64,6 +65,7 @@ def default_evaluator(*, latency_budget_ms: int = 2000) -> Evaluator:
             VoiceEventIntegrityMetric(),
             VoiceLatencyBreakdownMetric(),
             VoiceTransportContinuityMetric(),
+            VoiceEndpointingRecoveryMetric(),
             BargeInRecoveryMetric(),
         ]
     )
