@@ -1,0 +1,40 @@
+{
+  "session_id": "adv-semantic-fabricated",
+  "role": "Python Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "How did you investigate the production issue?",
+      "rubric_tags": ["debugging"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I reproduced the issue and compared traces before changing anything.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "evidence_graph": {
+      "debugging": {
+        "competency_id": "debugging",
+        "state": "demonstrated",
+        "confidence": 0.9,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.9,
+            "quote": "I used a flame graph to isolate the bottleneck",
+            "note": "Adversarial fixture with a quote that does not exist.",
+            "source": "semantic_judge:fixture-judge"
+          }
+        ]
+      }
+    },
+    "evidence_judge_failures": []
+  }
+}
