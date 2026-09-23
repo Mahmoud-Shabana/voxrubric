@@ -1,0 +1,49 @@
+{
+  "session_id": "cal-insufficient",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "How have you designed multi-region failover?",
+      "rubric_tags": ["reliability"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I haven't handled multi-region failover directly, so I don't have a concrete example from my own work.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "reliability",
+        "turn_id": "a1",
+        "expected_state": "insufficient_evidence",
+        "min_confidence": 0.75,
+        "max_confidence": 0.99
+      }
+    ],
+    "evidence_graph": {
+      "reliability": {
+        "competency_id": "reliability",
+        "state": "insufficient_evidence",
+        "confidence": 0.9,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "insufficient_evidence",
+            "confidence": 0.9,
+            "quote": "I haven't handled multi-region failover directly",
+            "note": "The answer explicitly says there is no direct experience to evaluate.",
+            "source": "semantic_judge:fixture",
+            "active": true
+          }
+        ]
+      }
+    }
+  }
+}
