@@ -1,0 +1,43 @@
+id: nora-vs-fixed-backend-v1
+role: Backend Engineer
+locale: ar-SA
+repetitions: 3
+max_candidate_turns: 8
+
+rubric:
+  id: backend-v1
+  title: Backend Engineer
+  dimensions:
+    - id: python
+      description: Python engineering
+      required: true
+    - id: debugging
+      description: Production debugging
+      required: true
+    - id: systems
+      description: Systems reasoning
+      required: true
+
+persona:
+  id: senior-code-switch
+  skill_level: 4
+  answer_style: code_switched
+  known_topics: [python, debugging, systems]
+  weak_topics: []
+
+agents:
+  - id: fixed-structured
+    questions:
+      - text: Describe a Python service you owned.
+        rubric_tags: [python]
+      - text: Walk me through a production incident you debugged.
+        rubric_tags: [debugging]
+      - text: Explain one system scaling trade-off.
+        rubric_tags: [systems]
+
+nora_agents:
+  - id: nora-local
+    base_url: http://localhost:8000
+    role_description: >
+      Backend engineering role focused on Python implementation,
+      production debugging, and systems reasoning.
