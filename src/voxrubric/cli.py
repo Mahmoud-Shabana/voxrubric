@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.table import Table
 
 from .arena_config import run_scripted_arena
-from .benchmark import run_suite
+from .benchmark import run_pack, run_suite
 from .html_report import (
     write_arena_html,
     write_benchmark_html,
@@ -86,6 +86,67 @@ def benchmark(
             html_output,
         )
         console.print(f"Wrote {html_output}")
+    if not result.passed:
+        raise typer.Exit(code=1)
+
+
+@app.command("benchmark-pack")
+def benchmark_pack(
+    directory: Path = typer.Argument(
+        ...,
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        help="Directory containing one or more *-pack.yaml benchmark suites.",
+    ),
+    latency_budget_ms: int = typer.Option(
+        2000,
+        min=1,
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional aggregate JSON result path.",
+    ),
+) -> None:
+    result = run_pack(
+        directory,
+        latency_budget_ms=latency_budget_ms,
+    )
+
+    table = Table(
+        title=f"VoxRubric benchmark pack — {result.pack_id}"
+    )
+    table.add_column("Suite")
+    table.add_column("Cases", justify="right")
+    table.add_column("Status")
+    table.add_column("Failed cases", justify="right")
+
+    for suite in result.suites:
+        failed = sum(
+            not case.passed
+            for case in suite.cases
+        )
+        table.add_row(
+            suite.suite_id,
+            str(len(suite.cases)),
+            "PASS" if suite.passed else "FAIL",
+            str(failed),
+        )
+
+    console.print(table)
+    console.print(
+        f"Pack status: {'PASS' if result.passed else 'FAIL'}"
+    )
+
+    if output:
+        output.write_text(
+            result.model_dump_json(indent=2),
+            encoding="utf-8",
+        )
+        console.print(f"Wrote {output}")
+
     if not result.passed:
         raise typer.Exit(code=1)
 
