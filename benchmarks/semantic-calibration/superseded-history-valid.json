@@ -1,0 +1,101 @@
+{
+  "session_id": "cal-superseded-valid",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "How did you diagnose the incident?",
+      "rubric_tags": ["debugging"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I reproduced the issue, compared database metrics, isolated a slow query, and verified the fix.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "debugging",
+        "turn_id": "a1",
+        "expected_state": "demonstrated",
+        "min_confidence": 0.8,
+        "max_confidence": 0.98
+      }
+    ],
+    "transcript_revisions": [
+      {
+        "id": "rev-1",
+        "turn_id": "a1",
+        "original_text": "I reproduced the issue and compared traces.",
+        "corrected_text": "I reproduced the issue, compared database metrics, isolated a slow query, and verified the fix.",
+        "reason": "candidate correction"
+      }
+    ],
+    "evidence_judge_runs": [
+      {
+        "id": "run-1",
+        "judge_id": "judge-a",
+        "question_turn_id": "q1",
+        "answer_turn_id": "a1",
+        "competency_ids": ["debugging"],
+        "created_at": "2026-09-24T00:00:00+00:00",
+        "transcript_revision_count": 0,
+        "observation_ids": ["e-old"],
+        "audit": {},
+        "error_type": null,
+        "error": null,
+        "supersedes_run_id": null
+      },
+      {
+        "id": "run-2",
+        "judge_id": "judge-a",
+        "question_turn_id": "q1",
+        "answer_turn_id": "a1",
+        "competency_ids": ["debugging"],
+        "created_at": "2026-09-24T00:01:00+00:00",
+        "transcript_revision_count": 1,
+        "observation_ids": ["e-current"],
+        "audit": {},
+        "error_type": null,
+        "error": null,
+        "supersedes_run_id": "run-1"
+      }
+    ],
+    "evidence_graph": {
+      "debugging": {
+        "competency_id": "debugging",
+        "state": "demonstrated",
+        "confidence": 0.92,
+        "evidence": [
+          {
+            "id": "e-old",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.88,
+            "quote": "compared traces",
+            "note": "Historical evidence preserved after correction.",
+            "source": "semantic_judge:judge-a",
+            "judge_run_id": "run-1",
+            "active": false
+          },
+          {
+            "id": "e-current",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.92,
+            "quote": "isolated a slow query",
+            "note": "Current evidence derived from the corrected transcript.",
+            "source": "semantic_judge:judge-a",
+            "judge_run_id": "run-2",
+            "active": true
+          }
+        ]
+      }
+    },
+    "evidence_judge_failures": []
+  }
+}
