@@ -9,8 +9,14 @@ from .lanes import DualLaneBalanceMetric
 from .latency import LatencyMetric
 from .provenance import EvidenceProvenanceMetric
 from .tools import ToolArtifactIntegrityMetric
+from .voice import (
+    BargeInRecoveryMetric,
+    VoiceEventIntegrityMetric,
+    VoiceLatencyBreakdownMetric,
+)
 
 __all__ = [
+    "BargeInRecoveryMetric",
     "CandidateControlRecoveryMetric",
     "CodeSwitchMetric",
     "DualLaneBalanceMetric",
@@ -22,4 +28,6 @@ __all__ = [
     "LatencyMetric",
     "RubricCoverageMetric",
     "ToolArtifactIntegrityMetric",
+    "VoiceEventIntegrityMetric",
+    "VoiceLatencyBreakdownMetric",
 ]
