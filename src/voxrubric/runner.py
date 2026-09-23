@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from .metrics import (
+    BargeInRecoveryMetric,
     CandidateControlRecoveryMetric,
     CodeSwitchMetric,
     DualLaneBalanceMetric,
@@ -14,6 +15,8 @@ from .metrics import (
     LatencyMetric,
     RubricCoverageMetric,
     ToolArtifactIntegrityMetric,
+    VoiceEventIntegrityMetric,
+    VoiceLatencyBreakdownMetric,
 )
 from .metrics.base import Metric
 from .models import EvaluationReport, InterviewTrace, Rubric
@@ -49,5 +52,8 @@ def default_evaluator(*, latency_budget_ms: int = 2000) -> Evaluator:
             GovernanceAuditMetric(),
             CandidateControlRecoveryMetric(),
             ToolArtifactIntegrityMetric(),
+            VoiceEventIntegrityMetric(),
+            VoiceLatencyBreakdownMetric(),
+            BargeInRecoveryMetric(),
         ]
     )
