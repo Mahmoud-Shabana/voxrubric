@@ -1,0 +1,7 @@
+id: semantic-calibration-backend
+title: Semantic Evidence Calibration
+dimensions:
+  - id: debugging
+    description: Investigates production failures with concrete diagnostic actions.
+  - id: reliability
+    description: Designs or operates systems with explicit reliability mechanisms.
