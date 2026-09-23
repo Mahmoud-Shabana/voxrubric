@@ -15,6 +15,7 @@ from .tools import ToolArtifactIntegrityMetric
 from .traceability import AuditCorrelationIntegrityMetric
 from .voice import (
     BargeInRecoveryMetric,
+    VoiceEndpointingRecoveryMetric,
     VoiceEventIntegrityMetric,
     VoiceLatencyBreakdownMetric,
     VoiceTransportContinuityMetric,
@@ -37,6 +38,7 @@ __all__ = [
     "SemanticEvidenceCalibrationMetric",
     "SemanticJudgeIntegrityMetric",
     "ToolArtifactIntegrityMetric",
+    "VoiceEndpointingRecoveryMetric",
     "VoiceEventIntegrityMetric",
     "VoiceLatencyBreakdownMetric",
     "VoiceTransportContinuityMetric",
