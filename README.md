@@ -1,177 +1,329 @@
-# VoxRubric
+# 📊 VoxRubric
 
-> Evidence-grounded evaluation and benchmarking for AI interview and voice agents.
+<p align="center">
+  <strong>Evidence-grounded evaluation, regression testing, and Arena benchmarking for AI interview & voice agents.</strong>
+</p>
 
-VoxRubric is an open-source Python toolkit for testing whether an interview agent **asks the right things, follows up traceably, covers the intended rubric, preserves candidate rights, uses practical tools safely, handles realtime voice interactions correctly, cites real evidence, behaves consistently across repeated runs, and stays responsive**.
+<p align="center">
+  Measure the interview system — not just the final score.
+</p>
 
-It is deliberately **not** another resume-to-questions demo, and it does not collapse unrelated behaviors into one magic score.
+<p align="center">
+  <img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white">
+  <img alt="Version 0.4.0" src="https://img.shields.io/badge/Version-0.4.0-6f42c1">
+  <img alt="License Apache-2.0" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg">
+  <img alt="Status Alpha" src="https://img.shields.io/badge/Status-Alpha-orange">
+  <img alt="Provider Neutral" src="https://img.shields.io/badge/Provider-Neutral-00897B">
+  <img alt="Arabic English" src="https://img.shields.io/badge/Arabic%20%2B%20English-first--class-2E8B57">
+  <img alt="CI" src="https://github.com/Mahmoud-Shabana/voxrubric/actions/workflows/ci.yml/badge.svg">
+</p>
 
-## Why VoxRubric
+<p align="center">
+  <a href="#-why-voxrubric">Why</a> ·
+  <a href="#-metric-suite">Metrics</a> ·
+  <a href="#-arena">Arena</a> ·
+  <a href="#-architecture">Architecture</a> ·
+  <a href="#-quick-start">Quick Start</a> ·
+  <a href="#-benchmarking">Benchmarking</a> ·
+  <a href="#-roadmap">Roadmap</a>
+</p>
 
-Interview agents can fail far below the level of a final candidate score:
+---
 
-- a required competency is silently skipped;
-- a follow-up is not actually linked to the candidate answer that caused it;
-- a judge cites words the candidate never said;
-- two judges materially disagree;
-- a practical assessment leaks hidden tests or produces a score even though manual review is required;
-- a candidate asks for clarification or thinking time and the agent mishandles the request;
-- realtime audio sounds slow, but it is unclear whether STT, reasoning, or TTS startup is responsible;
-- the agent fails to recover after the candidate interrupts it;
-- repeated runs of the same controlled scenario produce unstable question paths.
+## 🌟 What is VoxRubric?
 
-VoxRubric makes those failures explicit and machine-testable.
+**VoxRubric** is an open-source evaluation toolkit for AI interview and voice agents.
 
-## Design principles
+It tests whether an agent:
 
-1. **Evidence before scores.** High-stakes claims should be auditable back to transcript turns or practical artifacts.
-2. **Separate metrics.** Coverage, grounding, latency, governance, tool integrity, voice behavior, and stability remain distinct.
-3. **Provider-neutral core.** Hosted models, local models, and external interview agents connect through small adapters.
-4. **Deterministic checks first.** Structural failures are caught before semantic judge calls.
-5. **Arabic/English is first-class.** Code-switched speech is represented in the benchmark schema.
-6. **Candidate rights are testable.** Transcript corrections, appeals, and review-only integrity signals can be validated from traces.
-7. **No automatic winner.** Arena reports descriptive measurements instead of ranking interview systems.
-8. **Human decision ownership.** VoxRubric measures systems; it is not an autonomous hiring authority.
+- covers the intended rubric;
+- grounds evidence in real transcript turns;
+- follows up traceably;
+- preserves candidate controls and rights;
+- handles practical tools safely;
+- behaves consistently across repeated runs;
+- supports Arabic/English code-switching;
+- stays responsive in realtime voice interactions;
+- recovers correctly after barge-in;
+- produces inspectable evaluation artifacts.
 
-## What ships in v0.4
+VoxRubric deliberately avoids collapsing all behavior into one “magic quality score”.
 
-| Capability | What it measures |
+> Different failure modes remain different metrics.
+
+---
+
+## 💡 Why VoxRubric?
+
+A production interview agent can fail even when its final score looks plausible.
+
+Examples:
+
+- ❌ required competency skipped;
+- ❌ follow-up not actually linked to the candidate answer;
+- ❌ fabricated evidence quote;
+- ❌ judges disagree materially;
+- ❌ hidden practical-test data leaks;
+- ❌ manual-review artifact still receives a fake automatic score;
+- ❌ candidate asks for thinking time and the agent mishandles it;
+- ❌ STT is fast but reasoning latency makes voice unusable;
+- ❌ TTS continues after the candidate interrupts;
+- ❌ identical repeated scenarios produce unstable interview paths.
+
+VoxRubric turns these into explicit, machine-testable behaviors.
+
+---
+
+# 🧭 Design principles
+
+| Principle | Meaning |
 |---|---|
-| `evidence_grounding` | Whether cited evidence exists in the referenced transcript turn |
-| `rubric_coverage` | Weighted coverage of required interview dimensions |
-| `follow_up_integrity` | Whether follow-ups trace to actual candidate answers |
-| `response_latency` | p50/p95/max interviewer response latency |
+| 🧾 **Evidence before scores** | High-stakes claims should trace back to actual turns or artifacts |
+| 🧩 **Separate metrics** | Coverage, latency, grounding, governance, and voice remain distinct |
+| 🔌 **Provider-neutral** | Hosted/local/external models connect through small interfaces |
+| ⚙️ **Deterministic first** | Structural failures are caught before expensive judge calls |
+| 🌍 **Arabic + English first-class** | Code-switched technical speech is part of the test model |
+| 🧑‍⚖️ **Human decision ownership** | VoxRubric evaluates systems, not people autonomously |
+| 🧪 **Regression-oriented** | Known-bad traces should fail for known reasons |
+| 🏟️ **No automatic winner** | Arena reports measurements without universal ranking |
+
+---
+
+# 📐 Metric suite
+
+## Core metrics
+
+| Metric | Purpose |
+|---|---|
+| `evidence_grounding` | Are cited quotes present in the referenced transcript turn? |
+| `rubric_coverage` | Were required dimensions covered? |
+| `follow_up_integrity` | Do follow-ups point to real candidate answers? |
+| `response_latency` | p50 / p95 / max interviewer latency |
 | `code_switching` | Arabic/Latin code-switching in candidate turns |
 | `judge_agreement` | Cross-judge normalized score agreement |
-| `dual_lane_balance` | Whether standardized anchors remain represented beside adaptive questions |
-| `evidence_provenance` | Whether skill evidence points to real transcript turns with valid provenance |
-| `governance_audit` | Candidate correction/appeal integrity and human-review-only integrity signals |
-| `candidate_control_recovery` | Repeat/clarify/thinking-time/resume/correction recovery behavior |
-| `tool_artifact_integrity` | Tool lifecycle, artifact lineage, manual-review semantics, and hidden-data leakage |
-| `voice_event_integrity` | Realtime speech/TTS lifecycle consistency |
-| `voice_latency_breakdown` | STT-finalization, reasoning, TTS-startup, and end-to-end voice latency |
-| `barge_in_recovery` | Whether interruptions cancel stale audio and recover through a new response |
 
-## Quick start
+## Governance & evidence
 
-```bash
-python -m pip install -e '.[dev]'
+| Metric | Purpose |
+|---|---|
+| `dual_lane_balance` | Anchor/adaptive interview balance |
+| `evidence_provenance` | Evidence points to valid turns with valid provenance |
+| `governance_audit` | Corrections, appeals, and review-only integrity signals |
+| `candidate_control_recovery` | Repeat/clarify/thinking-time/resume/correction handling |
 
-voxrubric eval \
-  --trace examples/session.json \
-  --rubric examples/python_engineer.yaml \
-  --out report.md
+## Practical tools
 
-# Adversarial regression pack
-voxrubric benchmark benchmarks/adversarial/suite.yaml \
-  --out benchmark-result.json
+| Metric | Purpose |
+|---|---|
+| `tool_artifact_integrity` | Tool lifecycle, artifact lineage, manual-review semantics, hidden-data leakage |
 
-# Repeated controlled agent comparison
-voxrubric arena examples/arena.yaml \
-  --out arena-result.json
+## Realtime voice
+
+| Metric | Purpose |
+|---|---|
+| `voice_event_integrity` | Valid speech/TTS lifecycle ordering |
+| `voice_latency_breakdown` | STT finalization, reasoning, TTS startup, end-to-end p95 |
+| `barge_in_recovery` | Does interruption cancel stale audio and recover correctly? |
+
+---
+
+# 🏗️ Architecture
+
+## Evaluation pipeline
+
+```mermaid
+flowchart TB
+    Agent[🤖 Interview Agent]
+    Recorded[🎧 Recorded Session]
+    Simulator[🧪 Synthetic Candidate]
+    Trace[🧾 InterviewTrace]
+    Structural[⚙️ Deterministic Metrics]
+    Judge[🧠 Optional JudgeProvider]
+    Governance[🧑‍⚖️ Governance Checks]
+    Voice[🎙️ Voice Metrics]
+    Tools[🛠️ Tool Integrity]
+    Report[📊 EvaluationReport]
+    JSON[JSON]
+    MD[Markdown]
+    CI[CI Gate]
+
+    Agent --> Trace
+    Recorded --> Trace
+    Simulator --> Trace
+
+    Trace --> Structural
+    Trace --> Judge
+    Trace --> Governance
+    Trace --> Voice
+    Trace --> Tools
+
+    Structural --> Report
+    Judge --> Report
+    Governance --> Report
+    Voice --> Report
+    Tools --> Report
+
+    Report --> JSON
+    Report --> MD
+    Report --> CI
 ```
 
-Python API:
+## Evaluation philosophy
 
-```python
-from voxrubric.config import load_rubric, load_trace
-from voxrubric import default_evaluator
-
-trace = load_trace("examples/session.json")
-rubric = load_rubric("examples/python_engineer.yaml")
-report = default_evaluator(latency_budget_ms=1800).run(trace, rubric)
-
-for metric in report.metrics:
-    print(metric.metric, metric.value, metric.passed)
+```text
+cheap structural checks
+        ↓
+trace invariants
+        ↓
+governance / provenance
+        ↓
+optional semantic judge
+        ↓
+report
 ```
 
-## Adversarial benchmark suites
+Structural failures should be caught before invoking a semantic model.
 
-A VoxRubric benchmark suite can assert that known-good traces pass **and** known-bad traces fail for the expected reason.
+---
 
-The bundled suite covers:
+# 🏟️ Arena
 
-- fabricated evidence;
-- missing competency coverage;
-- broken follow-up lineage;
-- excessive latency;
-- bilingual/code-switched controls.
+**VoxRubric Arena** runs the same controlled scenario and synthetic candidate against multiple interview-agent adapters.
 
-See `docs/BENCHMARKING.md`.
+```mermaid
+flowchart LR
+    S[Scenario + Rubric]
+    C[Synthetic Candidate]
+    A1[Agent A]
+    A2[Agent B]
+    B[Fixed Baseline]
+    R1[Repeated Runs]
+    R2[Repeated Runs]
+    R3[Repeated Runs]
+    V[VoxRubric Evaluation]
+    Agg[Per-Agent Aggregates]
 
-## Arena
-
-VoxRubric Arena runs the **same scenario and synthetic candidate profile** against multiple interview-agent adapters.
-
-It preserves every trace and every metric separately, and can measure repeated-run question-path stability. It deliberately does **not** choose a winner or create a universal quality score.
-
-```bash
-voxrubric arena examples/arena.yaml
+    S --> C
+    C --> A1 --> R1 --> V
+    C --> A2 --> R2 --> V
+    C --> B --> R3 --> V
+    V --> Agg
 ```
 
-Current Arena support includes:
+Arena currently supports:
 
 - deterministic synthetic candidates;
 - repeated runs;
-- scripted fixed-interview baselines;
-- provider-neutral `InterviewAgentFactory` / `InterviewAgentSession` protocols;
-- per-agent completion/turn aggregates;
+- scripted baseline agents;
+- provider-neutral agent adapters;
+- completion/turn aggregates;
 - question-path stability;
-- ordinary VoxRubric evaluation on every generated trace.
+- ordinary VoxRubric metrics for every generated trace.
 
-See `docs/ARENA.md`.
+### Important
 
-## Governance-aware evaluation
+Arena **does not**:
 
-For Nora-style traces, VoxRubric can validate:
+- select a universal winner;
+- produce a single combined quality score;
+- claim synthetic candidates represent all real candidates.
 
-- standardized anchor vs adaptive question balance;
-- skill-evidence provenance;
-- candidate transcript corrections;
-- appeals referencing real turns;
-- integrity signals remaining human-review-only;
-- structured candidate controls;
-- practical tool lifecycle and artifact lineage;
-- voice lifecycle and barge-in recovery.
+It reports descriptive measurements and leaves weighting decisions to the researcher/operator.
 
-Generic traces that do not expose these metadata fields remain valid; product-specific metrics return non-applicable results instead of inventing failures.
+See [docs/ARENA.md](docs/ARENA.md).
 
-## Realtime voice evaluation
+---
 
-VoxRubric separates voice latency into independent components:
+# 🎙️ Realtime voice evaluation
 
-```text
-candidate speech
-      |
-      v
-final transcript      -> speech_to_final
-      |
-      v
-agent response ready  -> final_to_response
-      |
-      v
-TTS starts            -> response_to_tts
+VoxRubric decomposes conversational voice latency.
+
+```mermaid
+flowchart LR
+    A[Candidate speech] -->|speech_to_final| B[Final transcript]
+    B -->|final_to_response| C[Agent response ready]
+    C -->|response_to_tts| D[TTS starts]
 ```
 
-That makes it possible to distinguish slow STT from slow reasoning or slow speech synthesis.
+This helps identify where voice interaction is slow:
 
-The voice layer also checks event ordering and whether a barge-in actually causes stale TTS cancellation followed by a new final transcript and response.
+- STT finalization;
+- agent reasoning;
+- TTS startup.
 
-## Tool and artifact evaluation
+### Barge-in recovery
 
-Interview-agent traces can include coding, case-study, whiteboard, document, and other tool artifacts.
+A successful interruption path looks like:
 
-VoxRubric validates structural invariants such as:
+```mermaid
+sequenceDiagram
+    participant A as Agent TTS
+    participant C as Candidate
+    participant V as Voice State
+    participant N as Interview Agent
 
-- submissions reference real tools;
-- evaluations reference the correct submission;
-- evaluated tools actually have evaluations;
-- review-required artifacts are not assigned fake automatic scores;
-- public payloads do not expose keys such as `hidden_tests`, `answer_key`, or `expected_solution`.
+    A->>C: Speaking
+    C->>V: speech_started
+    V->>A: cancel stale TTS
+    V->>V: increment generation
+    C->>V: final transcript
+    V->>N: candidate answer
+    N-->>V: next response
+```
 
-## Trace schema
+VoxRubric can check whether the lifecycle is structurally complete.
 
-The base trace remains intentionally small:
+---
+
+# 🛠️ Tool & artifact integrity
+
+VoxRubric understands practical interview artifacts such as:
+
+- coding;
+- case studies;
+- documents;
+- whiteboards;
+- datasets.
+
+It validates invariants including:
+
+- submission references a real tool;
+- evaluation references the correct submission;
+- evaluated tool has an evaluation;
+- manual-review artifact does not receive an automatic score;
+- public payload does not leak private evaluation data.
+
+Forbidden public keys include patterns such as:
+
+```text
+hidden_tests
+private_tests
+answer_key
+expected_solution
+gold_solution
+```
+
+---
+
+# 🧑‍⚖️ Governance-aware evaluation
+
+For Nora-style traces, VoxRubric can inspect:
+
+- candidate transcript revisions;
+- candidate appeals;
+- integrity signals;
+- evidence provenance;
+- candidate controls;
+- tool lifecycle;
+- realtime voice lifecycle.
+
+Product-specific metrics return **non-applicable** when the relevant metadata is absent rather than inventing a failure.
+
+---
+
+# 🧾 Trace model
+
+A minimal turn:
 
 ```json
 {
@@ -184,7 +336,7 @@ The base trace remains intentionally small:
 }
 ```
 
-A semantic scorecard is evidence-bearing by construction:
+An evidence-bearing scorecard:
 
 ```json
 {
@@ -200,40 +352,97 @@ A semantic scorecard is evidence-bearing by construction:
 }
 ```
 
-## Architecture
+---
 
-```text
-Agent / Nora / recorded interview / simulator
-                  |
-                  v
-            InterviewTrace
-                  |
-        +---------+----------+
-        | deterministic      |
-        | metric layer       |
-        +---------+----------+
-                  |
-        optional JudgeProvider
-                  |
-                  v
-           EvaluationReport
-          /       |        \
-       JSON    Markdown    CI
+# 🧪 Benchmarking
 
-Controlled scenarios
-        |
-        v
-      Arena
-        |
-        +--> Agent A repeated runs
-        +--> Agent B repeated runs
-        +--> baseline agents
-        |
-        v
-descriptive comparison + stability
+A benchmark suite contains traces plus **expected evaluator behavior**.
+
+The goal is not to make every trace pass.
+
+A strong evaluator must fail known-bad traces for the right reason.
+
+Bundled adversarial cases cover:
+
+- fabricated evidence;
+- missing competency coverage;
+- broken follow-up lineage;
+- excessive latency;
+- bilingual/code-switched control traces.
+
+See [docs/BENCHMARKING.md](docs/BENCHMARKING.md).
+
+---
+
+# 🚀 Quick start
+
+## Requirements
+
+- Python **3.11+**
+
+## Install
+
+```bash
+git clone https://github.com/Mahmoud-Shabana/voxrubric.git
+cd voxrubric
+
+python -m pip install -e '.[dev]'
+pytest
 ```
 
-## Provider-neutral judge boundary
+## Evaluate a trace
+
+```bash
+voxrubric eval \
+  --trace examples/session.json \
+  --rubric examples/python_engineer.yaml \
+  --out report.md
+```
+
+## Run adversarial benchmark suite
+
+```bash
+voxrubric benchmark \
+  benchmarks/adversarial/suite.yaml \
+  --out benchmark-result.json
+```
+
+## Run Arena
+
+```bash
+voxrubric arena \
+  examples/arena.yaml \
+  --out arena-result.json
+```
+
+---
+
+# 🐍 Python API
+
+```python
+from voxrubric import default_evaluator
+from voxrubric.config import load_rubric, load_trace
+
+trace = load_trace("examples/session.json")
+rubric = load_rubric("examples/python_engineer.yaml")
+
+report = default_evaluator(
+    latency_budget_ms=1800
+).run(trace, rubric)
+
+for metric in report.metrics:
+    print(
+        metric.metric,
+        metric.value,
+        metric.passed,
+    )
+```
+
+---
+
+# 🔌 Provider-neutral interfaces
+
+## Semantic judge
 
 ```python
 class JudgeProvider(Protocol):
@@ -247,61 +456,210 @@ class JudgeProvider(Protocol):
     ) -> InterviewScorecard: ...
 ```
 
-That boundary allows the same trace to be evaluated across different semantic judges without rewriting the benchmark.
+## Arena agent adapter
 
-## Arabic + English
+```python
+class InterviewAgentSession(Protocol):
+    async def start(
+        self,
+        *,
+        role,
+        rubric,
+        locale,
+    ) -> AgentUtterance: ...
 
-The examples and synthetic fixtures support Arabic/English technical code-switching such as:
+    async def respond(
+        self,
+        candidate_text: str,
+    ) -> AgentUtterance: ...
+
+
+class InterviewAgentFactory(Protocol):
+    @property
+    def agent_id(self) -> str: ...
+
+    def create(self) -> InterviewAgentSession: ...
+```
+
+---
+
+# 🌍 Arabic + English
+
+Arabic/English technical code-switching is represented as a first-class test condition.
+
+Example:
 
 ```text
 اشتغلت على FastAPI service وكان عندنا blocking database calls
 بتأخر الـ event loop...
 ```
 
-VoxRubric currently detects code-switching structurally. More advanced ASR-preservation and semantic-consistency benchmark packs remain on the roadmap.
+Current support includes structural code-switch detection and deterministic mixed-language fixtures.
 
-## Safety and hiring use
+Future benchmark packs will target:
 
-VoxRubric should not infer or score race, religion, nationality, disability, age, gender, facial expression, attractiveness, accent prestige, health, or other protected/sensitive traits.
+- ASR preservation;
+- Arabic technical vocabulary;
+- dialect variation;
+- semantic consistency across code-switching;
+- follow-up robustness.
 
-For real hiring deployments, keep accountable human review, document job-related rubrics, obtain appropriate consent, define retention limits, and validate the system for the jurisdiction where it is used.
+---
 
-## Roadmap
+# 🗃️ Project structure
 
-### Implemented
+```text
+voxrubric/
+├── src/voxrubric/
+│   ├── models.py                # Trace / rubric / metric contracts
+│   ├── runner.py                # Default evaluator
+│   ├── cli.py                   # CLI
+│   ├── judging.py               # Judge ensembles
+│   ├── synthetic.py             # Deterministic synthetic candidates
+│   ├── benchmark.py             # Benchmark execution
+│   ├── benchmark_models.py      # Benchmark schema
+│   ├── arena.py                 # Multi-agent Arena runner
+│   ├── arena_agents.py          # Baseline adapters
+│   ├── arena_config.py          # YAML Arena loader
+│   └── metrics/
+│       ├── evidence.py
+│       ├── coverage.py
+│       ├── followups.py
+│       ├── latency.py
+│       ├── agreement.py
+│       ├── codeswitch.py
+│       ├── lanes.py
+│       ├── provenance.py
+│       ├── governance.py
+│       ├── controls.py
+│       ├── tools.py
+│       └── voice.py
+├── benchmarks/
+│   └── adversarial/
+├── examples/
+│   ├── arena.yaml
+│   └── arena_demo.py
+├── tests/
+├── docs/
+└── pyproject.toml
+```
 
-- [x] adversarial evidence-grounding benchmark cases
-- [x] deterministic synthetic candidate simulator
-- [x] dual-lane standardization checks
-- [x] evidence-provenance validation
-- [x] candidate-rights and integrity governance audit
-- [x] candidate-control recovery checks
-- [x] practical tool/artifact integrity checks
-- [x] realtime voice lifecycle checks
-- [x] barge-in / interruption / recovery metric
-- [x] STT / reasoning / TTS latency breakdown
-- [x] repeated-run structural question-path stability
-- [x] multi-agent Arena runner
-- [x] YAML Arena scenarios and CLI
-- [x] CI smoke execution for adversarial benchmarks and Arena
+---
 
-### Next
+# 🔁 CI & regression workflow
 
-- [ ] reference semantic `JudgeProvider` adapters for hosted and local models
+```mermaid
+flowchart LR
+    Push[Git push] --> Compile[compileall]
+    Compile --> Tests[pytest]
+    Tests --> Eval[Example eval]
+    Eval --> Bench[Adversarial benchmark]
+    Bench --> Arena[Arena smoke scenario]
+```
+
+CI is designed to catch both ordinary code regressions and evaluator-behavior regressions.
+
+---
+
+# 📚 Documentation
+
+- [Benchmarking](docs/BENCHMARKING.md)
+- [Arena Methodology](docs/ARENA.md)
+- [Nora Interviewer](https://github.com/Mahmoud-Shabana/nora-interviewer)
+
+---
+
+# 🗺️ Roadmap
+
+## ✅ Implemented
+
+- [x] evidence-grounding checks
+- [x] rubric coverage
+- [x] follow-up integrity
+- [x] latency metrics
+- [x] code-switch detection
+- [x] judge agreement
+- [x] dual-lane balance
+- [x] evidence provenance
+- [x] governance audit
+- [x] candidate-control recovery
+- [x] tool-artifact integrity
+- [x] realtime voice lifecycle integrity
+- [x] voice latency breakdown
+- [x] barge-in recovery
+- [x] adversarial benchmark suites
+- [x] deterministic synthetic candidates
+- [x] repeated-run path stability
+- [x] multi-agent Arena
+- [x] YAML Arena scenarios
+- [x] CLI support
+- [x] CI smoke regression for benchmarks and Arena
+
+## 🧭 Next
+
+- [ ] hosted-model JudgeProvider reference adapter
+- [ ] local-model JudgeProvider reference adapter
 - [ ] semantic follow-up quality evaluator
-- [ ] ASR-preservation benchmarks for Arabic/English technical vocabulary
-- [ ] statistical confidence intervals across repeated stochastic runs
-- [ ] richer benchmark packs for software engineering, support, sales, and graduate hiring
+- [ ] ASR-preservation benchmark pack
+- [ ] statistical confidence intervals
+- [ ] richer role/domain benchmark packs
 - [ ] HTML comparison report
-- [ ] versioned public benchmark dataset and dataset cards
-- [ ] external-agent adapters for remote interview systems
+- [ ] versioned benchmark dataset + dataset cards
+- [ ] external interview-agent adapters
+- [ ] Nora Arena adapter
 
-## What VoxRubric is not
+---
 
-It is not an ATS, not an autonomous hiring decision engine, not a facial/emotion analysis system, and not a leaderboard that decides which political, hiring, or human outcome is “best.”
+# 🔐 Safety & high-stakes use
 
-It is infrastructure for making AI interview behavior measurable, reproducible, and auditable.
+VoxRubric should not infer or score:
 
-## License
+- race;
+- religion;
+- nationality;
+- disability;
+- age;
+- gender;
+- health;
+- facial expression;
+- attractiveness;
+- accent prestige;
+- other protected/sensitive traits.
 
-Apache-2.0. See `LICENSE`.
+It is infrastructure for evaluating systems.
+
+It is **not** an autonomous hiring authority.
+
+---
+
+# 🤝 Contributing
+
+Useful contribution areas include:
+
+- evaluation metrics;
+- benchmark design;
+- voice-agent testing;
+- interview-agent adapters;
+- Arabic/English ASR evaluation;
+- adversarial datasets;
+- reproducibility tooling;
+- reporting and visualization.
+
+A new metric should answer:
+
+> What concrete system behavior does this measure, and what failure should it catch?
+
+---
+
+# 📄 License
+
+Apache-2.0.
+
+See [LICENSE](LICENSE).
+
+---
+
+<p align="center">
+  <strong>VoxRubric</strong><br>
+  Evidence before scores. Measurements before rankings.
+</p>
