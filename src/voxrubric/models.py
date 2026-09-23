@@ -105,6 +105,7 @@ class AgentUtterance(StrictModel):
     text: str
     rubric_tags: list[str] = Field(default_factory=list)
     metadata: dict[str, Any] = Field(default_factory=dict)
+    is_followup: bool = False
     completes_interview: bool = False
 
 
