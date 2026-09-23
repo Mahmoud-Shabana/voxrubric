@@ -9,7 +9,11 @@ from rich.table import Table
 
 from .arena_config import run_scripted_arena
 from .benchmark import run_suite
-from .html_report import write_arena_html, write_evaluation_html
+from .html_report import (
+    write_arena_html,
+    write_benchmark_html,
+    write_evaluation_html,
+)
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
 from .report import to_markdown
@@ -55,6 +59,11 @@ def benchmark(
     suite: Path = typer.Argument(..., exists=True, readable=True, help="Benchmark suite YAML."),
     latency_budget_ms: int = typer.Option(2000, min=1),
     output: Path | None = typer.Option(None, "--out", help="Optional JSON result path."),
+    html_output: Path | None = typer.Option(
+        None,
+        "--html-out",
+        help="Optional self-contained HTML benchmark report path.",
+    ),
 ) -> None:
     result = run_suite(suite, latency_budget_ms=latency_budget_ms)
     table = Table(title=f"VoxRubric benchmark — {result.suite_id}")
@@ -68,6 +77,12 @@ def benchmark(
     if output:
         output.write_text(result.model_dump_json(indent=2), encoding="utf-8")
         console.print(f"Wrote {output}")
+    if html_output:
+        write_benchmark_html(
+            result,
+            html_output,
+        )
+        console.print(f"Wrote {html_output}")
     if not result.passed:
         raise typer.Exit(code=1)
 
