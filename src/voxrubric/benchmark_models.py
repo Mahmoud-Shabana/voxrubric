@@ -42,3 +42,10 @@ class SuiteResult(StrictModel):
     suite_id: str
     passed: bool
     cases: list[CaseResult]
+
+
+
+class BenchmarkPackResult(StrictModel):
+    pack_id: str
+    passed: bool
+    suites: list[SuiteResult] = Field(min_length=1)
