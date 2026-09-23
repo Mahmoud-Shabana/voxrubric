@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
 
 import typer
 from rich.console import Console
 from rich.table import Table
 
+from .arena_config import run_scripted_arena
 from .benchmark import run_suite
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
@@ -65,6 +67,56 @@ def benchmark(
         console.print(f"Wrote {output}")
     if not result.passed:
         raise typer.Exit(code=1)
+
+
+@app.command("arena")
+def arena(
+    config: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Arena YAML containing a scenario and scripted baseline agents.",
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional JSON result path.",
+    ),
+) -> None:
+    result = asyncio.run(run_scripted_arena(config))
+    table = Table(title=f"VoxRubric Arena — {result.scenario_id}")
+    table.add_column("Agent")
+    table.add_column("Runs", justify="right")
+    table.add_column("Completion", justify="right")
+    table.add_column("Candidate turns", justify="right")
+    table.add_column("Interviewer turns", justify="right")
+    table.add_column("Path stability", justify="right")
+
+    for item in result.aggregates:
+        stability = (
+            "—"
+            if item.question_path_stability is None
+            else f"{item.question_path_stability:.3f}"
+        )
+        table.add_row(
+            item.agent_id,
+            str(item.runs),
+            f"{item.completion_rate:.3f}",
+            f"{item.mean_candidate_turns:.2f}",
+            f"{item.mean_interviewer_turns:.2f}",
+            stability,
+        )
+    console.print(table)
+    console.print(
+        "Arena reports descriptive measurements only; it does not select a winner."
+    )
+
+    if output:
+        output.write_text(
+            result.model_dump_json(indent=2),
+            encoding="utf-8",
+        )
+        console.print(f"Wrote {output}")
 
 
 @app.command("validate-dataset")
