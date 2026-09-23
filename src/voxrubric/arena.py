@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from itertools import combinations
-from statistics import fmean
+from random import Random
+from statistics import fmean, stdev
 from time import perf_counter
 
 from pydantic import Field
@@ -42,6 +43,10 @@ class MetricAggregate(StrictModel):
     mean: float
     minimum: float
     maximum: float
+    standard_deviation: float | None = None
+    ci95_low: float | None = None
+    ci95_high: float | None = None
+    ci_method: str | None = None
 
 
 class AgentArenaAggregate(StrictModel):
@@ -59,6 +64,42 @@ class ArenaResult(StrictModel):
     repetitions: int
     runs: list[ArenaRun]
     aggregates: list[AgentArenaAggregate]
+
+
+def _bootstrap_mean_ci(
+    values: list[float],
+    *,
+    iterations: int = 2000,
+    seed: int = 20260923,
+) -> tuple[float | None, float | None]:
+    if len(values) < 2:
+        return None, None
+    if iterations < 100:
+        raise ValueError("bootstrap iterations must be >= 100")
+
+    rng = Random(seed)
+    sample_size = len(values)
+    means: list[float] = []
+    for _ in range(iterations):
+        sample = [
+            values[rng.randrange(sample_size)]
+            for _ in range(sample_size)
+        ]
+        means.append(fmean(sample))
+
+    means.sort()
+    low_index = max(
+        0,
+        int(0.025 * iterations),
+    )
+    high_index = min(
+        iterations - 1,
+        int(0.975 * iterations) - 1,
+    )
+    return (
+        round(means[low_index], 4),
+        round(means[high_index], 4),
+    )
 
 
 def _evaluative_path(trace: InterviewTrace) -> list[set[str]]:
@@ -272,16 +313,30 @@ class ArenaRunner:
                         float(metric.value)
                     )
 
-        metrics = [
-            MetricAggregate(
-                metric=name,
-                samples=len(values),
-                mean=round(fmean(values), 4),
-                minimum=round(min(values), 4),
-                maximum=round(max(values), 4),
+        metrics: list[MetricAggregate] = []
+        for name, values in sorted(metric_values.items()):
+            ci_low, ci_high = _bootstrap_mean_ci(values)
+            metrics.append(
+                MetricAggregate(
+                    metric=name,
+                    samples=len(values),
+                    mean=round(fmean(values), 4),
+                    minimum=round(min(values), 4),
+                    maximum=round(max(values), 4),
+                    standard_deviation=(
+                        round(stdev(values), 4)
+                        if len(values) >= 2
+                        else None
+                    ),
+                    ci95_low=ci_low,
+                    ci95_high=ci_high,
+                    ci_method=(
+                        "percentile_bootstrap_2000"
+                        if ci_low is not None
+                        else None
+                    ),
+                )
             )
-            for name, values in sorted(metric_values.items())
-        ]
 
         stability: float | None = None
         if len(runs) >= 2:
