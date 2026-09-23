@@ -1,0 +1,89 @@
+{
+  "session_id": "demo-001",
+  "role": "Senior Python Engineer",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "t1",
+      "speaker": "interviewer",
+      "text": "Tell me about a Python service where concurrency mattered.",
+      "response_latency_ms": 620,
+      "rubric_tags": ["concurrency", "communication"]
+    },
+    {
+      "id": "t2",
+      "speaker": "candidate",
+      "text": "اشتغلت على FastAPI service وكان عندنا blocking database calls بتأخر الـ event loop. نقلنا الجزء الـ blocking إلى thread pool وبعدها قسنا latency قبل وبعد.",
+      "rubric_tags": []
+    },
+    {
+      "id": "t3",
+      "speaker": "interviewer",
+      "text": "What evidence told you the event loop was being blocked, and how did you rule out the database itself?",
+      "response_latency_ms": 780,
+      "parent_turn_id": "t2",
+      "rubric_tags": ["concurrency", "debugging"]
+    },
+    {
+      "id": "t4",
+      "speaker": "candidate",
+      "text": "We compared event-loop lag with database query duration. Query time stayed stable while loop lag spiked under load, so we profiled synchronous calls and reproduced the delay locally.",
+      "rubric_tags": []
+    },
+    {
+      "id": "t5",
+      "speaker": "interviewer",
+      "text": "In Python, what is the difference between an iterator and a generator?",
+      "response_latency_ms": 540,
+      "rubric_tags": ["python_core"]
+    },
+    {
+      "id": "t6",
+      "speaker": "candidate",
+      "text": "A generator is an iterator created by a generator function or expression; it produces values lazily and preserves execution state between yields.",
+      "rubric_tags": []
+    }
+  ],
+  "scorecards": [
+    {
+      "judge_id": "judge-a",
+      "dimensions": [
+        {
+          "dimension": "concurrency",
+          "score": 8.5,
+          "evidence": [{"turn_id": "t2", "quote": "blocking database calls", "rationale": "Identifies blocking work inside an async service."}]
+        },
+        {
+          "dimension": "debugging",
+          "score": 8.0,
+          "evidence": [{"turn_id": "t4", "quote": "event-loop lag with database query duration", "rationale": "Separates competing hypotheses using measurements."}]
+        },
+        {
+          "dimension": "python_core",
+          "score": 8.5,
+          "evidence": [{"turn_id": "t6", "quote": "produces values lazily", "rationale": "Correct generator semantics."}]
+        }
+      ]
+    },
+    {
+      "judge_id": "judge-b",
+      "dimensions": [
+        {
+          "dimension": "concurrency",
+          "score": 8.0,
+          "evidence": [{"turn_id": "t2", "quote": "thread pool", "rationale": "Describes a valid mitigation."}]
+        },
+        {
+          "dimension": "debugging",
+          "score": 8.5,
+          "evidence": [{"turn_id": "t4", "quote": "profiled synchronous calls", "rationale": "Uses profiling to validate the diagnosis."}]
+        },
+        {
+          "dimension": "python_core",
+          "score": 8.0,
+          "evidence": [{"turn_id": "t6", "quote": "preserves execution state between yields", "rationale": "Correctly captures generator behavior."}]
+        }
+      ]
+    }
+  ]
+}
