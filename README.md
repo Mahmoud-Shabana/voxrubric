@@ -19,6 +19,8 @@ Most interview-agent demos focus on generating questions and producing a final s
 
 VoxRubric makes those failures explicit and machine-testable.
 
+v0.3 also treats **governance behavior as testable behavior**. If an agent declares a standardized/adaptive interview policy, exposes candidate transcript corrections, or emits integrity flags, VoxRubric can validate that those guarantees remain intact in exported traces.
+
 ## Design principles
 
 1. **Evidence before scores.** Every high-stakes score should be auditable back to transcript turns.
@@ -28,7 +30,7 @@ VoxRubric makes those failures explicit and machine-testable.
 5. **Arabic/English is first-class.** Code-switched speech is represented in the benchmark schema rather than treated as an edge case.
 6. **Human decision ownership.** The toolkit measures system behavior; it is not an autonomous hiring authority.
 
-## What ships in v0.2
+## What ships in v0.3
 
 | Capability | What it measures |
 |---|---|
@@ -38,6 +40,9 @@ VoxRubric makes those failures explicit and machine-testable.
 | `response_latency` | p50/p95/max interviewer response latency |
 | `code_switching` | Arabic/Latin code-switching in candidate turns |
 | `judge_agreement` | Cross-judge normalized score agreement |
+| `dual_lane_balance` | Whether standardized anchors remain represented beside adaptive questions |
+| `evidence_provenance` | Whether skill evidence points to real transcript turns with valid evaluator confidence |
+| `governance_audit` | Candidate correction/appeal integrity and human-review-only integrity signals |
 
 ## Quick start
 
@@ -137,6 +142,18 @@ class JudgeProvider(Protocol):
 
 That boundary lets a benchmark compare providers without rewriting the evaluation system.
 
+## Governance-aware evaluation
+
+For Nora-style traces, the default evaluator now validates:
+
+- standardized anchor vs adaptive question balance;
+- skill evidence provenance back to real transcript turns;
+- transcript revisions that preserve candidate ownership;
+- appeals that reference known turns;
+- integrity signals that remain explicitly human-review-only.
+
+These metrics return N/A for generic traces that do not expose the relevant metadata, so the core remains provider- and product-neutral.
+
 ## Arabic + English example
 
 The included example contains a natural mixed-language answer:
@@ -160,6 +177,9 @@ For real hiring deployments, keep a human accountable for the decision, document
 - [x] adversarial evidence-grounding cases
 - [x] deterministic synthetic candidate simulator with controllable skill profiles
 - [ ] semantic follow-up quality evaluator
+- [x] dual-lane standardization checks
+- [x] evidence-provenance validation
+- [x] candidate-rights and integrity governance audit
 - [ ] ASR preservation tests for Arabic/English technical vocabulary
 - [ ] interruption / barge-in / recovery benchmark
 - [ ] repeated-run stability and confidence intervals
