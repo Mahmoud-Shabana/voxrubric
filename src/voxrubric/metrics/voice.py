@@ -549,3 +549,119 @@ class VoiceTransportContinuityMetric(Metric):
                 "problems": problems,
             },
         )
+
+
+
+class VoiceEndpointingRecoveryMetric(Metric):
+    """Validate VAD auto-endpoints through the final transcript boundary."""
+
+    name = "voice_endpointing_recovery"
+
+    def evaluate(
+        self,
+        trace: InterviewTrace,
+        rubric: Rubric,
+    ) -> MetricResult:
+        events = _events(trace)
+        endpoints: list[tuple[int, int, dict]] = []
+        finals: dict[int, list[int]] = defaultdict(list)
+        problems: list[str] = []
+
+        for event in events:
+            event_type = str(event.get("type", ""))
+            payload = _payload(event)
+            generation = int(
+                payload.get("generation", 0)
+                or 0
+            )
+            seq = int(event.get("seq", 0) or 0)
+
+            if event_type == "voice_vad_endpoint":
+                endpoints.append(
+                    (seq, generation, payload)
+                )
+            elif event_type == "voice_transcript_final":
+                finals[generation].append(seq)
+
+        if not endpoints:
+            return MetricResult(
+                metric=self.name,
+                summary="No VAD auto-endpoint events were recorded.",
+                details={"applicable": False},
+            )
+
+        recovered = 0
+        endpoint_details: list[dict] = []
+
+        for seq, generation, payload in endpoints:
+            state = payload.get("state")
+            auto_commit = payload.get(
+                "auto_commit_recommended"
+            )
+            endpoint_problem: list[str] = []
+
+            if state not in {
+                "speech_ended",
+                "max_duration",
+            }:
+                endpoint_problem.append(
+                    "invalid endpoint state"
+                )
+            if auto_commit is not True:
+                endpoint_problem.append(
+                    "auto_commit_recommended is not true"
+                )
+
+            later_final = next(
+                (
+                    final_seq
+                    for final_seq in finals.get(
+                        generation,
+                        [],
+                    )
+                    if final_seq > seq
+                ),
+                None,
+            )
+            if later_final is None:
+                endpoint_problem.append(
+                    "no later final transcript for generation"
+                )
+
+            if endpoint_problem:
+                problems.append(
+                    f"generation {generation} endpoint at seq {seq}: "
+                    + ", ".join(endpoint_problem)
+                )
+            else:
+                recovered += 1
+
+            endpoint_details.append({
+                "seq": seq,
+                "generation": generation,
+                "state": state,
+                "utterance_ms": payload.get(
+                    "utterance_ms"
+                ),
+                "silence_ms": payload.get(
+                    "silence_ms"
+                ),
+                "final_seq": later_final,
+                "recovered": not endpoint_problem,
+            })
+
+        ratio = recovered / len(endpoints)
+        return MetricResult(
+            metric=self.name,
+            value=round(ratio, 4),
+            unit="recovered_vad_endpoint_ratio",
+            passed=not problems,
+            summary=(
+                f"{recovered}/{len(endpoints)} VAD endpoints "
+                "reached a final transcript in the same generation."
+            ),
+            details={
+                "endpoints": endpoint_details,
+                "problems": problems,
+            },
+        )
