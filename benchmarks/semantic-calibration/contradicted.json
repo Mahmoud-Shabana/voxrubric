@@ -1,0 +1,49 @@
+{
+  "session_id": "cal-contradicted",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "Did your service use retries to handle transient failures?",
+      "rubric_tags": ["reliability"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I initially said we used retries, but checking the implementation later showed we never enabled retries in that service.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "semantic_calibration_targets": [
+      {
+        "competency_id": "reliability",
+        "turn_id": "a1",
+        "expected_state": "contradicted",
+        "min_confidence": 0.8,
+        "max_confidence": 0.99
+      }
+    ],
+    "evidence_graph": {
+      "reliability": {
+        "competency_id": "reliability",
+        "state": "contradicted",
+        "confidence": 0.93,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "contradicted",
+            "confidence": 0.93,
+            "quote": "we never enabled retries in that service",
+            "note": "The candidate explicitly retracts the earlier reliability claim.",
+            "source": "semantic_judge:fixture",
+            "active": true
+          }
+        ]
+      }
+    }
+  }
+}
