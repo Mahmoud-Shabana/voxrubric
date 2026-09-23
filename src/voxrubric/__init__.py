@@ -28,6 +28,7 @@ from .review_bundle import (
     load_review_bundle,
 )
 from .runner import Evaluator, default_evaluator
+from .trace_diff import TraceDiffReport, compare_traces
 
 __all__ = [
     "AgentArenaAggregate",
@@ -50,8 +51,10 @@ __all__ = [
     "ScriptedAgentFactory",
     "ScriptedQuestion",
     "Speaker",
+    "TraceDiffReport",
     "Turn",
     "audit_review_bundle",
+    "compare_traces",
     "default_evaluator",
     "load_review_bundle",
 ]
