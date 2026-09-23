@@ -1,0 +1,54 @@
+{
+  "session_id": "cal-failed-latest",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "Describe a production incident.",
+      "rubric_tags": ["debugging"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I reproduced the issue and compared metrics.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "transcript_revisions": [],
+    "evidence_judge_runs": [
+      {
+        "id": "run-failed",
+        "judge_id": "judge-a",
+        "question_turn_id": "q1",
+        "answer_turn_id": "a1",
+        "competency_ids": ["debugging"],
+        "created_at": "2026-09-24T00:00:00+00:00",
+        "transcript_revision_count": 0,
+        "observation_ids": [],
+        "audit": {},
+        "error_type": "EvidenceJudgeError",
+        "error": "provider timeout",
+        "supersedes_run_id": null
+      }
+    ],
+    "evidence_graph": {
+      "debugging": {
+        "competency_id": "debugging",
+        "state": "claimed",
+        "confidence": null,
+        "evidence": []
+      }
+    },
+    "evidence_judge_failures": [
+      {
+        "payload": {
+          "judge_id": "judge-a",
+          "error": "provider timeout"
+        }
+      }
+    ]
+  }
+}
