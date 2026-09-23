@@ -1,5 +1,6 @@
 from .agreement import JudgeAgreementMetric
 from .codeswitch import CodeSwitchMetric
+from .controls import CandidateControlRecoveryMetric
 from .coverage import RubricCoverageMetric
 from .evidence import EvidenceGroundingMetric
 from .followups import FollowUpIntegrityMetric
@@ -7,8 +8,10 @@ from .governance import GovernanceAuditMetric
 from .lanes import DualLaneBalanceMetric
 from .latency import LatencyMetric
 from .provenance import EvidenceProvenanceMetric
+from .tools import ToolArtifactIntegrityMetric
 
 __all__ = [
+    "CandidateControlRecoveryMetric",
     "CodeSwitchMetric",
     "DualLaneBalanceMetric",
     "EvidenceGroundingMetric",
@@ -18,4 +21,5 @@ __all__ = [
     "JudgeAgreementMetric",
     "LatencyMetric",
     "RubricCoverageMetric",
+    "ToolArtifactIntegrityMetric",
 ]
