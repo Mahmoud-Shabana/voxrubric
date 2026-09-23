@@ -4,6 +4,7 @@ from collections.abc import Iterable
 
 from .metrics import (
     AuditChainIntegrityMetric,
+    AuditCorrelationIntegrityMetric,
     BargeInRecoveryMetric,
     CandidateControlRecoveryMetric,
     CodeSwitchMetric,
@@ -46,6 +47,7 @@ def default_evaluator(*, latency_budget_ms: int = 2000) -> Evaluator:
         [
             EvidenceGroundingMetric(),
             AuditChainIntegrityMetric(),
+            AuditCorrelationIntegrityMetric(),
             RubricCoverageMetric(),
             FollowUpIntegrityMetric(),
             LatencyMetric(p95_budget_ms=latency_budget_ms),
