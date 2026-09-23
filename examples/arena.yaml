@@ -1,0 +1,45 @@
+id: backend-baselines-v1
+role: Backend Engineer
+locale: ar-SA
+repetitions: 3
+max_candidate_turns: 8
+
+rubric:
+  id: backend-v1
+  title: Backend Engineer
+  dimensions:
+    - id: python
+      description: Python engineering
+      required: true
+    - id: debugging
+      description: Production debugging
+      required: true
+    - id: systems
+      description: Systems reasoning
+      required: true
+
+persona:
+  id: senior-code-switch
+  skill_level: 4
+  answer_style: code_switched
+  known_topics: [python, debugging, systems]
+  weak_topics: []
+
+agents:
+  - id: balanced-fixed
+    questions:
+      - text: Describe a Python service you owned and one trade-off you made.
+        rubric_tags: [python]
+      - text: Walk me through a production incident and how you verified the root cause.
+        rubric_tags: [debugging]
+      - text: Explain a scaling decision and the failure mode you were protecting against.
+        rubric_tags: [systems]
+
+  - id: narrow-fixed
+    questions:
+      - text: Tell me about your Python experience.
+        rubric_tags: [python]
+      - text: Give me another Python implementation example.
+        rubric_tags: [python]
+      - text: What Python library do you use most often?
+        rubric_tags: [python]
