@@ -1,0 +1,12 @@
+{
+  "session_id": "adv-followup",
+  "role": "Python Engineer",
+  "locale": "en",
+  "turns": [
+    {"id":"q1","speaker":"interviewer","text":"Tell me about debugging.","rubric_tags":["debugging"]},
+    {"id":"a1","speaker":"candidate","text":"I reproduce, instrument, form hypotheses, and test them."},
+    {"id":"q2","speaker":"interviewer","text":"Can you expand?","parent_turn_id":"q1","rubric_tags":["python"]},
+    {"id":"a2","speaker":"candidate","text":"I also use traces and profiling."}
+  ],
+  "scorecards": []
+}
