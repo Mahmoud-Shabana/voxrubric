@@ -1,0 +1,77 @@
+id: semantic-state-calibration-v1
+title: Semantic Evidence State Calibration Pack
+cases:
+  - id: claimed-control
+    description: A bare experience assertion must remain claimed rather than demonstrated.
+    trace: claimed.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_evidence_calibration
+        min_value: 1.0
+        passed: true
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
+      - metric: evidence_provenance
+        min_value: 1.0
+        passed: true
+
+  - id: demonstrated-control
+    description: Concrete diagnostic actions and verification support demonstrated evidence.
+    trace: demonstrated.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_evidence_calibration
+        min_value: 1.0
+        passed: true
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
+
+  - id: contradicted-control
+    description: An explicit retraction of a prior claim must be represented as contradicted evidence.
+    trace: contradicted.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_evidence_calibration
+        min_value: 1.0
+        passed: true
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
+
+  - id: insufficient-control
+    description: Explicit absence of direct experience must remain insufficient evidence rather than negative competence.
+    trace: insufficient.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_evidence_calibration
+        min_value: 1.0
+        passed: true
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
+
+  - id: overclaim
+    description: Duration or participation alone must not be promoted to demonstrated competence.
+    trace: overclaim.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_evidence_calibration
+        max_value: 0.0
+        passed: false
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
+
+  - id: underclaim
+    description: Concrete implementation and outcome evidence must not be reduced to a bare claim.
+    trace: underclaim.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: semantic_evidence_calibration
+        max_value: 0.0
+        passed: false
+      - metric: semantic_judge_integrity
+        min_value: 1.0
+        passed: true
