@@ -99,3 +99,56 @@ Arena does not:
 - convert stability into correctness.
 
 Its purpose is to make agent behavior observable under controlled repeated scenarios.
+
+
+## Running Nora inside Arena
+
+VoxRubric can now treat a running Nora deployment as an ordinary Arena agent.
+
+Install the optional adapter dependency:
+
+```bash
+python -m pip install -e '.[dev,nora]'
+```
+
+Start Nora locally:
+
+```bash
+uvicorn nora_interviewer.api:app --reload
+```
+
+Then run the mixed example:
+
+```bash
+voxrubric arena examples/arena_nora.yaml --out arena-nora-result.json
+```
+
+A YAML scenario can mix fixed baselines and Nora instances:
+
+```yaml
+agents:
+  - id: fixed-structured
+    questions:
+      - text: Describe a production incident.
+        rubric_tags: [debugging]
+
+nora_agents:
+  - id: nora-local
+    base_url: http://localhost:8000
+    role_description: Backend engineering interview.
+```
+
+The Nora adapter creates an isolated job and candidate session for every Arena repetition, maps rubric dimensions into Nora competencies, and converts Nora interviewer turns back into provider-neutral `AgentUtterance` objects.
+
+If Nora authentication is running in development-header mode, headers can be declared on the adapter:
+
+```yaml
+nora_agents:
+  - id: nora-dev-auth
+    base_url: http://localhost:8000
+    headers:
+      X-Nora-Principal: arena-service
+      X-Nora-Role: service
+```
+
+This makes Nora-versus-baseline regression experiments repeatable without adding Nora as a hard dependency of the VoxRubric core.
