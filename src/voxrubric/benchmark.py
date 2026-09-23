@@ -4,7 +4,13 @@ from pathlib import Path
 
 import yaml
 
-from .benchmark_models import BenchmarkCase, BenchmarkSuite, CaseResult, SuiteResult
+from .benchmark_models import (
+    BenchmarkCase,
+    BenchmarkPackResult,
+    BenchmarkSuite,
+    CaseResult,
+    SuiteResult,
+)
 from .config import load_rubric, load_trace
 from .runner import default_evaluator
 
@@ -51,3 +57,43 @@ def run_suite(path: str | Path, *, latency_budget_ms: int = 2000) -> SuiteResult
         for case in suite.cases
     ]
     return SuiteResult(suite_id=suite.id, passed=all(case.passed for case in results), cases=results)
+
+
+
+def discover_pack(path: str | Path) -> list[Path]:
+    directory = Path(path)
+    if not directory.is_dir():
+        raise ValueError(
+            f"benchmark pack path is not a directory: {directory}"
+        )
+
+    suites = sorted(
+        item
+        for item in directory.glob("*-pack.yaml")
+        if item.is_file()
+    )
+    if not suites:
+        raise ValueError(
+            f"benchmark pack contains no *-pack.yaml suites: {directory}"
+        )
+    return suites
+
+
+def run_pack(
+    path: str | Path,
+    *,
+    latency_budget_ms: int = 2000,
+) -> BenchmarkPackResult:
+    directory = Path(path)
+    suites = [
+        run_suite(
+            suite,
+            latency_budget_ms=latency_budget_ms,
+        )
+        for suite in discover_pack(directory)
+    ]
+    return BenchmarkPackResult(
+        pack_id=directory.name,
+        passed=all(suite.passed for suite in suites),
+        suites=suites,
+    )
