@@ -19,7 +19,7 @@ Most interview-agent demos focus on generating questions and producing a final s
 
 VoxRubric makes those failures explicit and machine-testable.
 
-v0.3 also treats **governance behavior as testable behavior**. If an agent declares a standardized/adaptive interview policy, exposes candidate transcript corrections, or emits integrity flags, VoxRubric can validate that those guarantees remain intact in exported traces.
+v0.4 also treats **governance behavior as testable behavior**. If an agent declares a standardized/adaptive interview policy, exposes candidate transcript corrections, or emits integrity flags, VoxRubric can validate that those guarantees remain intact in exported traces.
 
 ## Design principles
 
@@ -30,7 +30,7 @@ v0.3 also treats **governance behavior as testable behavior**. If an agent decla
 5. **Arabic/English is first-class.** Code-switched speech is represented in the benchmark schema rather than treated as an edge case.
 6. **Human decision ownership.** The toolkit measures system behavior; it is not an autonomous hiring authority.
 
-## What ships in v0.3
+## What ships in v0.4
 
 | Capability | What it measures |
 |---|---|
@@ -55,6 +55,9 @@ voxrubric eval \
 
 # Run the bundled adversarial regression pack
 voxrubric benchmark benchmarks/adversarial/suite.yaml
+
+# Compare repeated controlled interview-agent runs
+voxrubric arena examples/arena.yaml --out arena-result.json
 ```
 
 Python API:
@@ -78,6 +81,18 @@ VoxRubric can assert that known-good traces pass **and** known-bad traces fail f
 The bundled adversarial suite covers fabricated evidence, missing competency coverage, broken follow-up lineage, excessive latency, and a bilingual grounded control. See `docs/BENCHMARKING.md`.
 
 Synthetic candidate personas are also available for deterministic regression fixtures with configurable skill level and answer style.
+
+## Arena
+
+VoxRubric Arena runs the same controlled scenario and synthetic candidate profile against multiple interview-agent adapters. It keeps traces and metrics separate, measures within-agent question-path stability across repeated runs, and deliberately does not select a winner.
+
+The included YAML example compares fixed baselines:
+
+```bash
+voxrubric arena examples/arena.yaml
+```
+
+Custom agents implement the provider-neutral `InterviewAgentFactory` / `InterviewAgentSession` protocols. See `docs/ARENA.md`.
 
 ## Trace schema
 
@@ -182,7 +197,8 @@ For real hiring deployments, keep a human accountable for the decision, document
 - [x] candidate-rights and integrity governance audit
 - [ ] ASR preservation tests for Arabic/English technical vocabulary
 - [ ] interruption / barge-in / recovery benchmark
-- [ ] repeated-run stability and confidence intervals
+- [x] repeated-run structural path stability
+- [ ] repeated-run statistical confidence intervals
 - [ ] benchmark packs for software engineering, customer support, sales, and graduate hiring
 - [ ] HTML report and run comparison
 - [ ] public benchmark dataset with versioned schema and dataset cards
