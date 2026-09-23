@@ -17,6 +17,7 @@ from .html_report import (
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
 from .report import to_markdown
+from .review_bundle import audit_review_bundle, load_review_bundle
 from .runner import default_evaluator
 
 app = typer.Typer(help="Evidence-grounded evaluation for AI interview and voice agents.", no_args_is_help=True)
@@ -147,6 +148,89 @@ def arena(
             html_output,
         )
         console.print(f"Wrote {html_output}")
+
+
+@app.command("review-bundle")
+def review_bundle(
+    bundle: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Nora review bundle JSON.",
+    ),
+    rubric: Path = typer.Option(
+        ...,
+        exists=True,
+        readable=True,
+        help="Rubric JSON/YAML used to evaluate the embedded trace.",
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional combined JSON audit result path.",
+    ),
+    latency_budget_ms: int = typer.Option(
+        2000,
+        min=1,
+    ),
+) -> None:
+    result = audit_review_bundle(
+        load_review_bundle(bundle),
+        load_rubric(rubric),
+        evaluator=default_evaluator(
+            latency_budget_ms=latency_budget_ms
+        ),
+    )
+
+    integrity = result.bundle_integrity
+    status = (
+        "PASS"
+        if integrity.passed is True
+        else "FAIL"
+        if integrity.passed is False
+        else "—"
+    )
+    console.print(
+        f"Review bundle integrity: {status} — {integrity.summary}"
+    )
+
+    table = Table(
+        title=f"Embedded trace evaluation — {result.session_id}"
+    )
+    table.add_column("Metric")
+    table.add_column("Value", justify="right")
+    table.add_column("Status")
+    table.add_column("Summary")
+    for metric in result.evaluation.metrics:
+        value = (
+            "—"
+            if metric.value is None
+            else f"{metric.value:g} {metric.unit or ''}".strip()
+        )
+        metric_status = (
+            "—"
+            if metric.passed is None
+            else "PASS"
+            if metric.passed
+            else "FAIL"
+        )
+        table.add_row(
+            metric.metric,
+            value,
+            metric_status,
+            metric.summary,
+        )
+    console.print(table)
+
+    if output:
+        output.write_text(
+            result.model_dump_json(indent=2),
+            encoding="utf-8",
+        )
+        console.print(f"Wrote {output}")
+
+    if integrity.passed is False:
+        raise typer.Exit(code=1)
 
 
 @app.command("validate-dataset")
