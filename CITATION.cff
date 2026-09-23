@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: VoxRubric
+message: "If you use VoxRubric in research, please cite the software release you evaluated."
+type: software
+authors:
+  - family-names: Hossam Eldin
+    given-names: Mahmoud S.
+version: 0.1.0
+date-released: 2026-09-23
+license: Apache-2.0
+repository-code: https://github.com/Mahmoud-Shabana/voxrubric
