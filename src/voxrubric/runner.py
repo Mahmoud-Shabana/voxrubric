@@ -4,8 +4,11 @@ from collections.abc import Iterable
 
 from .metrics import (
     CodeSwitchMetric,
+    DualLaneBalanceMetric,
     EvidenceGroundingMetric,
+    EvidenceProvenanceMetric,
     FollowUpIntegrityMetric,
+    GovernanceAuditMetric,
     JudgeAgreementMetric,
     LatencyMetric,
     RubricCoverageMetric,
@@ -39,5 +42,8 @@ def default_evaluator(*, latency_budget_ms: int = 2000) -> Evaluator:
             LatencyMetric(p95_budget_ms=latency_budget_ms),
             CodeSwitchMetric(),
             JudgeAgreementMetric(),
+            DualLaneBalanceMetric(),
+            EvidenceProvenanceMetric(),
+            GovernanceAuditMetric(),
         ]
     )
