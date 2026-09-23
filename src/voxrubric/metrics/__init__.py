@@ -15,6 +15,7 @@ from .voice import (
     BargeInRecoveryMetric,
     VoiceEventIntegrityMetric,
     VoiceLatencyBreakdownMetric,
+    VoiceTransportContinuityMetric,
 )
 
 __all__ = [
@@ -34,4 +35,5 @@ __all__ = [
     "ToolArtifactIntegrityMetric",
     "VoiceEventIntegrityMetric",
     "VoiceLatencyBreakdownMetric",
+    "VoiceTransportContinuityMetric",
 ]
