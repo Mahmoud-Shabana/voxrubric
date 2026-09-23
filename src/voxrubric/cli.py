@@ -9,6 +9,7 @@ from rich.table import Table
 
 from .arena_config import run_scripted_arena
 from .benchmark import run_suite
+from .html_report import write_arena_html
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
 from .report import to_markdown
@@ -82,6 +83,11 @@ def arena(
         "--out",
         help="Optional JSON result path.",
     ),
+    html_output: Path | None = typer.Option(
+        None,
+        "--html-out",
+        help="Optional self-contained HTML Arena report path.",
+    ),
 ) -> None:
     result = asyncio.run(run_scripted_arena(config))
     table = Table(title=f"VoxRubric Arena — {result.scenario_id}")
@@ -117,6 +123,13 @@ def arena(
             encoding="utf-8",
         )
         console.print(f"Wrote {output}")
+
+    if html_output:
+        write_arena_html(
+            result,
+            html_output,
+        )
+        console.print(f"Wrote {html_output}")
 
 
 @app.command("validate-dataset")
