@@ -1,5 +1,6 @@
 """VoxRubric public API."""
 
+from .judging import JudgeEnsemble
 from .models import (
     DimensionScore,
     EvidenceRef,
@@ -11,7 +12,7 @@ from .models import (
     Speaker,
     Turn,
 )
-from .judging import JudgeEnsemble\nfrom .runner import Evaluator, default_evaluator
+from .runner import Evaluator, default_evaluator
 
 __all__ = [
     "DimensionScore",
@@ -19,6 +20,7 @@ __all__ = [
     "Evaluator",
     "InterviewScorecard",
     "InterviewTrace",
+    "JudgeEnsemble",
     "MetricResult",
     "Rubric",
     "RubricDimension",
@@ -27,4 +29,4 @@ __all__ = [
     "default_evaluator",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
