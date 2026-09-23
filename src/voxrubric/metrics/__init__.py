@@ -9,6 +9,7 @@ from .governance import GovernanceAuditMetric
 from .lanes import DualLaneBalanceMetric
 from .latency import LatencyMetric
 from .provenance import EvidenceProvenanceMetric
+from .semantic_calibration import SemanticEvidenceCalibrationMetric
 from .semantic_judge import SemanticJudgeIntegrityMetric
 from .tools import ToolArtifactIntegrityMetric
 from .traceability import AuditCorrelationIntegrityMetric
@@ -33,6 +34,7 @@ __all__ = [
     "JudgeAgreementMetric",
     "LatencyMetric",
     "RubricCoverageMetric",
+    "SemanticEvidenceCalibrationMetric",
     "SemanticJudgeIntegrityMetric",
     "ToolArtifactIntegrityMetric",
     "VoiceEventIntegrityMetric",
