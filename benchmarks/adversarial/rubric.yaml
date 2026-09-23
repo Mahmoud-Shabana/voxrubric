@@ -1,0 +1,11 @@
+id: adversarial-python-v1
+title: Adversarial Python Interview
+dimensions:
+  - id: python
+    description: Python engineering fundamentals
+    weight: 1.0
+    required: true
+  - id: debugging
+    description: Evidence-based debugging
+    weight: 1.0
+    required: true
