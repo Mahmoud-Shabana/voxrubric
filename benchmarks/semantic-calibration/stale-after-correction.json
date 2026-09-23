@@ -1,0 +1,67 @@
+{
+  "session_id": "cal-stale-correction",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "How did you diagnose the incident?",
+      "rubric_tags": ["debugging"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I reproduced the issue and compared database metrics.",
+      "parent_turn_id": "q1"
+    }
+  ],
+  "metadata": {
+    "transcript_revisions": [
+      {
+        "id": "rev-1",
+        "turn_id": "a1",
+        "original_text": "I reproduced the issue and compared traces.",
+        "corrected_text": "I reproduced the issue and compared database metrics.",
+        "reason": "candidate correction"
+      }
+    ],
+    "evidence_judge_runs": [
+      {
+        "id": "run-1",
+        "judge_id": "judge-a",
+        "question_turn_id": "q1",
+        "answer_turn_id": "a1",
+        "competency_ids": ["debugging"],
+        "created_at": "2026-09-24T00:00:00+00:00",
+        "transcript_revision_count": 0,
+        "observation_ids": ["e1"],
+        "audit": {},
+        "error_type": null,
+        "error": null,
+        "supersedes_run_id": null
+      }
+    ],
+    "evidence_graph": {
+      "debugging": {
+        "competency_id": "debugging",
+        "state": "claimed",
+        "confidence": null,
+        "evidence": [
+          {
+            "id": "e1",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.9,
+            "quote": "compared traces",
+            "note": "Historical evidence from the pre-correction transcript.",
+            "source": "semantic_judge:judge-a",
+            "judge_run_id": "run-1",
+            "active": false
+          }
+        ]
+      }
+    },
+    "evidence_judge_failures": []
+  }
+}
