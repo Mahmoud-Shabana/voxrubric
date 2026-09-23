@@ -1,0 +1,20 @@
+{
+  "session_id": "adv-fabricated",
+  "role": "Python Engineer",
+  "locale": "en",
+  "turns": [
+    {"id":"q1","speaker":"interviewer","text":"Describe a Python production issue.","rubric_tags":["python"]},
+    {"id":"a1","speaker":"candidate","text":"I fixed a configuration typo and redeployed."},
+    {"id":"q2","speaker":"interviewer","text":"How did you validate it?","parent_turn_id":"a1","rubric_tags":["debugging"]},
+    {"id":"a2","speaker":"candidate","text":"I checked the health endpoint after deployment."}
+  ],
+  "scorecards": [
+    {
+      "judge_id":"judge-a",
+      "dimensions":[
+        {"dimension":"python","score":9,"evidence":[{"turn_id":"a1","quote":"implemented lock-free async batching"}]},
+        {"dimension":"debugging","score":9,"evidence":[{"turn_id":"a2","quote":"ran a statistically powered canary experiment"}]}
+      ]
+    }
+  ]
+}
