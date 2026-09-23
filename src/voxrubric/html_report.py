@@ -6,6 +6,7 @@ from pathlib import Path
 from .arena import AgentArenaAggregate, ArenaResult, ArenaRun
 from .benchmark_models import SuiteResult
 from .models import EvaluationReport
+from .trace_diff import TraceDiffReport
 
 
 _CSS = """
@@ -507,6 +508,142 @@ def write_benchmark_html(
     output = Path(path)
     output.write_text(
         render_benchmark_html(result),
+        encoding="utf-8",
+    )
+    return output
+
+
+
+def render_trace_diff_html(
+    result: TraceDiffReport,
+) -> str:
+    metric_rows: list[str] = []
+    for item in result.metric_deltas:
+        left = "—" if item.left_value is None else f"{item.left_value:g}"
+        right = "—" if item.right_value is None else f"{item.right_value:g}"
+        delta = "—" if item.delta is None else f"{item.delta:+g}"
+        metric_rows.append(
+            "<tr>"
+            f"<td class='code'>{escape(item.metric)}</td>"
+            f"<td>{escape(left)}</td>"
+            f"<td>{escape(right)}</td>"
+            f"<td>{escape(delta)}</td>"
+            f"<td>{escape(str(item.left_passed))} → {escape(str(item.right_passed))}</td>"
+            "</tr>"
+        )
+
+    path_rows: list[str] = []
+    for step in result.path_steps:
+        path_rows.append(
+            "<tr>"
+            f"<td>{step.index + 1}</td>"
+            f"<td class='code'>{escape(step.left_turn_id or '—')}</td>"
+            f"<td class='code'>{escape(step.right_turn_id or '—')}</td>"
+            f"<td>{escape(', '.join(step.left_tags) or '—')}</td>"
+            f"<td>{escape(', '.join(step.right_tags) or '—')}</td>"
+            f"<td>{step.tag_similarity:.3f}</td>"
+            f"<td>{'yes' if step.followup_agreement else 'no'}</td>"
+            "</tr>"
+        )
+
+    evidence_rows: list[str] = []
+    for item in result.evidence_deltas:
+        if not item.changed:
+            continue
+        evidence_rows.append(
+            "<tr>"
+            f"<td class='code'>{escape(item.competency_id)}</td>"
+            f"<td>{escape(item.left_state or '—')}</td>"
+            f"<td>{escape(item.right_state or '—')}</td>"
+            f"<td>{escape('—' if item.left_confidence is None else f'{item.left_confidence:g}')}</td>"
+            f"<td>{escape('—' if item.right_confidence is None else f'{item.right_confidence:g}')}</td>"
+            "</tr>"
+        )
+
+    if not evidence_rows:
+        evidence_rows.append(
+            "<tr><td colspan='5'>No competency evidence state/confidence changes.</td></tr>"
+        )
+
+    extra_css = """
+.diff-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px}
+.diff-summary>div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)}
+.diff-summary span{display:block;color:var(--muted);font-size:10px}.diff-summary strong{font-size:22px}
+@media(max-width:800px){.diff-summary{grid-template-columns:repeat(2,1fr)}}
+"""
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VoxRubric Diff — {escape(result.left_session_id)} → {escape(result.right_session_id)}</title>
+  <style>{_CSS}{extra_css}</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="eyebrow">VoxRubric Trace Diff</div>
+    <h1>{escape(result.left_session_id)} → {escape(result.right_session_id)}</h1>
+    <p>Rubric: <strong>{escape(str(result.metadata.get("rubric_id", "unknown")))}</strong></p>
+    <div class="note">
+      This report describes structural and metric changes only.
+      It does not rank the two interview agents or choose a winner.
+    </div>
+    <div class="diff-summary">
+      <div><span>Question-path similarity</span><strong>{result.question_path_similarity:.3f}</strong></div>
+      <div><span>Follow-up agreement</span><strong>{result.followup_action_agreement:.3f}</strong></div>
+      <div><span>Interviewer turn Δ</span><strong>{result.interviewer_turn_delta:+d}</strong></div>
+      <div><span>Candidate turn Δ</span><strong>{result.candidate_turn_delta:+d}</strong></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Metric deltas</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>Left</th><th>Right</th><th>Δ</th><th>Status</th></tr></thead>
+        <tbody>{''.join(metric_rows)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Question path</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Left turn</th><th>Right turn</th><th>Left tags</th><th>Right tags</th><th>Similarity</th><th>Follow-up agree</th></tr></thead>
+        <tbody>{''.join(path_rows)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Evidence changes</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Competency</th><th>Left state</th><th>Right state</th><th>Left confidence</th><th>Right confidence</th></tr></thead>
+        <tbody>{''.join(evidence_rows)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Generated by VoxRubric · descriptive comparison only
+  </footer>
+</main>
+</body>
+</html>
+"""
+
+
+def write_trace_diff_html(
+    result: TraceDiffReport,
+    path: str | Path,
+) -> Path:
+    output = Path(path)
+    output.write_text(
+        render_trace_diff_html(result),
         encoding="utf-8",
     )
     return output
