@@ -1,0 +1,55 @@
+id: adversarial-smoke-v1
+title: Adversarial smoke suite
+cases:
+  - id: grounded-control
+    description: A healthy bilingual trace should ground all cited evidence and cover the rubric.
+    trace: grounded.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: evidence_grounding
+        min_value: 1.0
+        passed: true
+      - metric: rubric_coverage
+        min_value: 1.0
+        passed: true
+      - metric: follow_up_integrity
+        min_value: 1.0
+        passed: true
+      - metric: code_switching
+        min_value: 0.5
+
+  - id: fabricated-evidence
+    description: A judge citing words never spoken must fail grounding.
+    trace: fabricated-evidence.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: evidence_grounding
+        max_value: 0.0
+        passed: false
+
+  - id: missing-coverage
+    description: Skipping a required competency must fail coverage.
+    trace: missing-coverage.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        max_value: 0.5
+        passed: false
+
+  - id: broken-followup
+    description: A follow-up attached to an interviewer turn must fail lineage validation.
+    trace: broken-followup.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: follow_up_integrity
+        max_value: 0.0
+        passed: false
+
+  - id: slow-agent
+    description: An agent above the configured real-time budget must fail latency.
+    trace: slow-agent.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: response_latency
+        min_value: 4000
+        passed: false
