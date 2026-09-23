@@ -1,6 +1,11 @@
 from pathlib import Path
 
-from voxrubric.benchmark import load_suite, run_suite
+from voxrubric.benchmark import (
+    discover_pack,
+    load_suite,
+    run_pack,
+    run_suite,
+)
 
 ROOT = Path(__file__).parents[1]
 
@@ -8,8 +13,33 @@ ROOT = Path(__file__).parents[1]
 def test_adversarial_suite_passes_expected_failures():
     path = ROOT / "benchmarks/adversarial/suite.yaml"
     suite = load_suite(path)
-    assert len(suite.cases) == 5
+    assert len(suite.cases) == 6
 
     result = run_suite(path)
     assert result.passed is True
     assert all(case.passed for case in result.cases)
+
+
+
+def test_semantic_calibration_pack_passes_expected_controls_and_failures():
+    directory = ROOT / "benchmarks/semantic-calibration"
+    suites = discover_pack(directory)
+
+    assert [path.name for path in suites] == [
+        "freshness-pack.yaml",
+        "state-pack.yaml",
+    ]
+
+    result = run_pack(directory)
+    assert result.pack_id == "semantic-calibration"
+    assert result.passed is True
+    assert len(result.suites) == 2
+    assert sum(
+        len(suite.cases)
+        for suite in result.suites
+    ) == 10
+    assert all(
+        case.passed
+        for suite in result.suites
+        for case in suite.cases
+    )
