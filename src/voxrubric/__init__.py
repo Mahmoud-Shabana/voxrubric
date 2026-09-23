@@ -11,7 +11,7 @@ from .models import (
     Speaker,
     Turn,
 )
-from .runner import Evaluator, default_evaluator
+from .judging import JudgeEnsemble\nfrom .runner import Evaluator, default_evaluator
 
 __all__ = [
     "DimensionScore",
@@ -27,4 +27,4 @@ __all__ = [
     "default_evaluator",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
