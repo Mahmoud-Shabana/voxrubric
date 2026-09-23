@@ -108,6 +108,7 @@ VoxRubric turns these into explicit, machine-testable behaviors.
 |---|---|
 | `dual_lane_balance` | Anchor/adaptive interview balance |
 | `evidence_provenance` | Evidence points to valid turns with valid provenance |
+| `semantic_judge_integrity` | Literal quote grounding, transcript-state limits, and judge failure audit |
 | `governance_audit` | Corrections, appeals, and review-only integrity signals |
 | `candidate_control_recovery` | Repeat/clarify/thinking-time/resume/correction handling |
 
@@ -309,6 +310,9 @@ gold_solution
 
 For Nora-style traces, VoxRubric can inspect:
 
+- semantic judge evidence and failures;
+- literal semantic quote grounding;
+- transcript semantic overclaiming (`verified`);
 - candidate transcript revisions;
 - candidate appeals;
 - integrity signals;
@@ -581,6 +585,8 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 - [x] judge agreement
 - [x] dual-lane balance
 - [x] evidence provenance
+- [x] semantic judge integrity
+- [x] literal quote provenance checks
 - [x] governance audit
 - [x] candidate-control recovery
 - [x] tool-artifact integrity
@@ -600,6 +606,7 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 - [ ] hosted-model JudgeProvider reference adapter
 - [ ] local-model JudgeProvider reference adapter
 - [ ] semantic follow-up quality evaluator
+- [ ] multi-judge semantic evidence disagreement analysis
 - [ ] ASR-preservation benchmark pack
 - [ ] statistical confidence intervals
 - [ ] richer role/domain benchmark packs
