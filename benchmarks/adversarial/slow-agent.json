@@ -1,0 +1,12 @@
+{
+  "session_id": "adv-latency",
+  "role": "Python Engineer",
+  "locale": "en",
+  "turns": [
+    {"id":"q1","speaker":"interviewer","text":"Question one","response_latency_ms":4200,"rubric_tags":["python"]},
+    {"id":"a1","speaker":"candidate","text":"Answer one"},
+    {"id":"q2","speaker":"interviewer","text":"Question two","response_latency_ms":5100,"rubric_tags":["debugging"]},
+    {"id":"a2","speaker":"candidate","text":"Answer two"}
+  ],
+  "scorecards": []
+}
