@@ -9,7 +9,7 @@ from rich.table import Table
 
 from .arena_config import run_scripted_arena
 from .benchmark import run_suite
-from .html_report import write_arena_html
+from .html_report import write_arena_html, write_evaluation_html
 from .config import load_rubric, load_trace
 from .datasets import load_jsonl
 from .report import to_markdown
@@ -23,7 +23,7 @@ console = Console()
 def evaluate(
     trace: Path = typer.Option(..., exists=True, readable=True, help="Interview trace JSON/YAML."),
     rubric: Path = typer.Option(..., exists=True, readable=True, help="Rubric JSON/YAML."),
-    output: Path | None = typer.Option(None, "--out", help="Write report as .json or .md."),
+    output: Path | None = typer.Option(None, "--out", help="Write report as .json, .md, or .html."),
     latency_budget_ms: int = typer.Option(2000, min=1),
 ) -> None:
     report = default_evaluator(latency_budget_ms=latency_budget_ms).run(load_trace(trace), load_rubric(rubric))
@@ -43,8 +43,10 @@ def evaluate(
             output.write_text(to_markdown(report), encoding="utf-8")
         elif output.suffix.lower() == ".json":
             output.write_text(report.model_dump_json(indent=2), encoding="utf-8")
+        elif output.suffix.lower() == ".html":
+            write_evaluation_html(report, output)
         else:
-            raise typer.BadParameter("--out must end in .json or .md")
+            raise typer.BadParameter("--out must end in .json, .md, or .html")
         console.print(f"Wrote {output}")
 
 
