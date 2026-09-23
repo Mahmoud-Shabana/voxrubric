@@ -1,0 +1,10 @@
+{
+  "session_id": "adv-coverage",
+  "role": "Python Engineer",
+  "locale": "en",
+  "turns": [
+    {"id":"q1","speaker":"interviewer","text":"Explain generators.","rubric_tags":["python"]},
+    {"id":"a1","speaker":"candidate","text":"Generators lazily yield values and preserve execution state."}
+  ],
+  "scorecards": []
+}
