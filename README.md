@@ -101,6 +101,7 @@ VoxRubric turns these into explicit, machine-testable behaviors.
 | `response_latency` | p50 / p95 / max interviewer latency |
 | `code_switching` | Arabic/Latin code-switching in candidate turns |
 | `judge_agreement` | Cross-judge normalized score agreement |
+| `semantic_judge_disagreement` | Material score/evidence divergence across semantic judges |
 
 ## Governance & evidence
 
@@ -631,7 +632,7 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 
 - [ ] local-model JudgeProvider reference adapter
 - [ ] semantic follow-up quality evaluator
-- [ ] multi-judge semantic evidence disagreement analysis
+- [x] multi-judge semantic evidence disagreement analysis
 - [ ] ASR-preservation benchmark pack
 - [ ] richer role/domain benchmark packs
 - [ ] versioned benchmark dataset + dataset cards
