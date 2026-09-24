@@ -63,3 +63,29 @@ def test_asr_preservation_pack_passes_expected_controls_and_failures():
         case.passed
         for case in result.suites[0].cases
     )
+
+
+
+def test_role_domain_pack_passes_controls_and_expected_failures():
+    directory = ROOT / "benchmarks/role-domains"
+    suites = discover_pack(directory)
+
+    assert [path.name for path in suites] == [
+        "customer-support-pack.yaml",
+        "data-analyst-pack.yaml",
+        "sre-pack.yaml",
+    ]
+
+    result = run_pack(directory)
+    assert result.pack_id == "role-domains"
+    assert result.passed is True
+    assert len(result.suites) == 3
+    assert sum(
+        len(suite.cases)
+        for suite in result.suites
+    ) == 6
+    assert all(
+        case.passed
+        for suite in result.suites
+        for case in suite.cases
+    )
