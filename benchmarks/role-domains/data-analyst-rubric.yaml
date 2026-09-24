@@ -1,0 +1,15 @@
+id: data-analyst
+title: Data Analyst
+dimensions:
+  - id: sql
+    description: Uses SQL correctly for analytical data work.
+    weight: 1.0
+    required: true
+  - id: experiment_design
+    description: Reasons about experiments, confounding, and causal interpretation.
+    weight: 1.0
+    required: true
+  - id: communication
+    description: Communicates analytical findings with appropriate caveats.
+    weight: 1.0
+    required: true
