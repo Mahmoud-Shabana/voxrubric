@@ -4,6 +4,13 @@ All notable VoxRubric changes are documented here.
 
 ## Unreleased — 0.5.0
 
+### Role/domain benchmark coverage
+
+- Added Customer Support, Data Analyst, and Site Reliability Engineering benchmark packs.
+- Added bilingual Arabic/English support controls.
+- Added role-specific expected failures for missing rubric coverage and broken follow-up lineage.
+- Added pack-level regression coverage across all three domains.
+
 ### ASR preservation
 
 - Added deterministic ASR preservation metric with normalized word error rate and word accuracy.
