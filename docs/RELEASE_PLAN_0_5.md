@@ -54,8 +54,8 @@ This file is the canonical release checklist. README roadmap items are descripti
 
 ### Gate 4 — Integration and release regression
 
-- [ ] end-to-end Nora export -> VoxRubric evaluation regression fixture
-- [ ] verify CLI eval, benchmark, Arena, and HTML report paths together
+- [x] end-to-end Nora export -> VoxRubric evaluation regression fixture
+- [x] verify CLI eval, benchmark, Arena, and HTML report paths together
 - [ ] update release changelog
 - [ ] bump package version to 0.5.0 only after all required gates pass
 
