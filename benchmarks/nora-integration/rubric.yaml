@@ -1,0 +1,11 @@
+id: nora-backend-regression
+title: Nora Backend Engineer Regression
+dimensions:
+  - id: debugging
+    description: Diagnose production failures using concrete evidence.
+    weight: 1.0
+    required: true
+  - id: systems
+    description: Design durable reliability controls.
+    weight: 1.0
+    required: true
