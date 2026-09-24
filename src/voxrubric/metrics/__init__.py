@@ -11,6 +11,7 @@ from .latency import LatencyMetric
 from .provenance import EvidenceProvenanceMetric
 from .semantic_calibration import SemanticEvidenceCalibrationMetric
 from .semantic_disagreement import SemanticJudgeDisagreementMetric
+from .semantic_followups import SemanticFollowUpQualityMetric
 from .semantic_judge import SemanticJudgeIntegrityMetric
 from .tools import ToolArtifactIntegrityMetric
 from .traceability import AuditCorrelationIntegrityMetric
@@ -38,6 +39,7 @@ __all__ = [
     "RubricCoverageMetric",
     "SemanticEvidenceCalibrationMetric",
     "SemanticJudgeDisagreementMetric",
+    "SemanticFollowUpQualityMetric",
     "SemanticJudgeIntegrityMetric",
     "ToolArtifactIntegrityMetric",
     "VoiceEndpointingRecoveryMetric",
