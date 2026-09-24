@@ -100,6 +100,7 @@ VoxRubric turns these into explicit, machine-testable behaviors.
 | `follow_up_integrity` | Do follow-ups point to real candidate answers? |
 | `response_latency` | p50 / p95 / max interviewer latency |
 | `code_switching` | Arabic/Latin code-switching in candidate turns |
+| `asr_preservation` | Reference-vs-ASR word accuracy, critical-term recall, and code-switch preservation |
 | `judge_agreement` | Cross-judge normalized score agreement |
 | `semantic_judge_disagreement` | Material score/evidence divergence across semantic judges |
 | `semantic_follow_up_quality` | Opt-in semantic relevance/grounding of declared follow-up questions |
@@ -665,7 +666,7 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 - [x] local-model JudgeProvider reference adapter
 - [x] semantic follow-up quality evaluator
 - [x] multi-judge semantic evidence disagreement analysis
-- [ ] ASR-preservation benchmark pack
+- [x] ASR-preservation benchmark pack
 - [ ] richer role/domain benchmark packs
 - [ ] versioned benchmark dataset + dataset cards
 - [ ] external interview-agent adapters beyond Nora
