@@ -1,0 +1,20 @@
+{
+  "session_id": "asr-code-switch-loss",
+  "role": "Backend Engineer",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "حللت زمن الاستجابة باستخدام القياس",
+      "metadata": {
+        "asr_reference_text": "حللت latency باستخدام OpenTelemetry",
+        "asr_critical_terms": [
+          "latency",
+          "OpenTelemetry"
+        ]
+      }
+    }
+  ],
+  "scorecards": []
+}
