@@ -1,6 +1,6 @@
 # VoxRubric v0.5.0 Release Plan
 
-Status: active  
+Status: code-complete; release blocked on GitHub Actions execution  
 Baseline before this release pass: `bcfd2966`  
 Current development line: `main`
 
@@ -56,7 +56,7 @@ This file is the canonical release checklist. README roadmap items are descripti
 
 - [x] end-to-end Nora export -> VoxRubric evaluation regression fixture
 - [x] verify CLI eval, benchmark, Arena, and HTML report paths together
-- [ ] update release changelog
+- [x] update release changelog
 - [ ] bump package version to 0.5.0 only after all required gates pass
 
 ## Explicitly not next
@@ -70,3 +70,10 @@ Do not spend a development cycle rebuilding:
 - semantic calibration packs
 
 Those capabilities already exist on `main`.
+
+
+## Current external blocker
+
+GitHub Actions push runs are being created, but the test job terminates before any workflow step starts: the GitHub job exposes no steps and no logs. The complete regression suite therefore has not executed in CI.
+
+Do not bump the package to 0.5.0 until a runner actually starts and the full regression suite passes. This is a release-execution blocker, not a reason to reopen completed feature work.
