@@ -4,6 +4,15 @@ All notable VoxRubric changes are documented here.
 
 ## Unreleased — 0.5.0
 
+### Semantic follow-up quality
+
+- Added an opt-in `SemanticFollowUpQualityMetric` backed by any `JudgeProvider`.
+- Evaluates each declared interviewer follow-up against its referenced candidate answer.
+- Requires both a configurable semantic score threshold and literal evidence from the parent answer.
+- Provider failures are reported as metric failures instead of crashing the evaluation run.
+- Kept semantic model calls out of the deterministic default evaluator.
+- Added regression coverage for strong, weak, ungrounded, failed-provider, and non-applicable cases.
+
 ### Semantic judge disagreement
 
 - Added descriptive cross-judge disagreement analysis for both normalized scores and evidence provenance.
