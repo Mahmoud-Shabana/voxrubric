@@ -50,7 +50,7 @@ This file is the canonical release checklist. README roadmap items are descripti
 
 - [x] ASR-preservation benchmark pack
 - [x] richer role/domain benchmark packs
-- [ ] versioned benchmark dataset metadata and dataset cards
+- [x] versioned benchmark dataset metadata and dataset cards
 
 ### Gate 4 — Integration and release regression
 
