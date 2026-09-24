@@ -1,0 +1,40 @@
+schema_version: "1.0"
+id: voxrubric-adversarial
+version: 1.0.0
+title: VoxRubric Adversarial Evaluator Regression Set
+description: Synthetic traces that exercise known evaluator failure modes and healthy controls.
+license: Apache-2.0
+languages:
+  - en
+  - ar-SA
+domains:
+  - interview-agent-evaluation
+  - adversarial-regression
+intended_use:
+  - Regression-test deterministic VoxRubric metrics.
+  - Verify known-bad traces fail for the intended reason.
+out_of_scope:
+  - Measuring real applicant quality.
+  - Estimating model performance on a population.
+source_policy: Hand-authored synthetic fixtures; no real applicant data.
+known_limitations:
+  - Small synthetic set focused on evaluator invariants.
+  - Does not represent real-world demographic or occupational distributions.
+card: DATASET_CARD.md
+files:
+  - path: suite.yaml
+    role: suite
+  - path: rubric.yaml
+    role: rubric
+  - path: grounded.json
+    role: trace
+  - path: fabricated-evidence.json
+    role: trace
+  - path: missing-coverage.json
+    role: trace
+  - path: broken-followup.json
+    role: trace
+  - path: slow-agent.json
+    role: trace
+  - path: semantic-fabricated-quote.json
+    role: trace
