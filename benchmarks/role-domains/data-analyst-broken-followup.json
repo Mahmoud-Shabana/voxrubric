@@ -1,0 +1,46 @@
+{
+  "session_id": "data-analyst-broken-followup",
+  "role": "Data Analyst",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "Explain how you would validate a SQL metric.",
+      "rubric_tags": ["sql"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I compare row counts, null rates, and sampled records against the source.",
+      "parent_turn_id": "q1"
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "What experiment caveat matters most?",
+      "parent_turn_id": "q1",
+      "rubric_tags": ["experiment_design"]
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "Randomization quality and sample ratio mismatch are early checks.",
+      "parent_turn_id": "q2"
+    },
+    {
+      "id": "q3",
+      "speaker": "interviewer",
+      "text": "How would you communicate the uncertainty?",
+      "parent_turn_id": "a2",
+      "rubric_tags": ["communication"]
+    },
+    {
+      "id": "a3",
+      "speaker": "candidate",
+      "text": "I would show the interval and explain what is and is not supported.",
+      "parent_turn_id": "q3"
+    }
+  ],
+  "scorecards": []
+}
