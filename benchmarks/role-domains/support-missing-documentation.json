@@ -1,0 +1,33 @@
+{
+  "session_id": "support-missing-documentation",
+  "role": "Customer Support Specialist",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "كيف تفهم مشكلة العميل؟",
+      "rubric_tags": ["discovery"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "أطلب رقم الطلب وأحدد المشكلة والنتيجة المطلوبة.",
+      "parent_turn_id": "q1"
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "كيف تتعامل مع غضبه؟",
+      "parent_turn_id": "a1",
+      "rubric_tags": ["de_escalation"]
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "أوضح الخطأ والخطوة التالية بهدوء.",
+      "parent_turn_id": "q2"
+    }
+  ],
+  "scorecards": []
+}
