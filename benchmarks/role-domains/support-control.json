@@ -1,0 +1,46 @@
+{
+  "session_id": "support-control",
+  "role": "Customer Support Specialist",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "عميل غاضب يقول إن الطلب تأخر. كيف تبدأ؟",
+      "rubric_tags": ["discovery"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "أراجع order ID و SLA وأتأكد من النتيجة التي يريدها العميل قبل ما أوعده بأي حل.",
+      "parent_turn_id": "q1"
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "بعد ما عرفت أن الـ SLA اتكسر، إزاي تهدي العميل وتوضح الخطوة التالية؟",
+      "parent_turn_id": "a1",
+      "rubric_tags": ["de_escalation"]
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "أعترف بالتأخير بوضوح، أحدد next action وموعد متابعة واقعي، وأتجنب لوم فريق آخر.",
+      "parent_turn_id": "q2"
+    },
+    {
+      "id": "q3",
+      "speaker": "interviewer",
+      "text": "ما الذي تسجله بعد إغلاق الحالة؟",
+      "parent_turn_id": "a2",
+      "rubric_tags": ["documentation"]
+    },
+    {
+      "id": "a3",
+      "speaker": "candidate",
+      "text": "أسجل root cause، الحل، وعد المتابعة وأي escalation حصلت.",
+      "parent_turn_id": "q3"
+    }
+  ],
+  "scorecards": []
+}
