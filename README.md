@@ -668,7 +668,7 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 - [x] multi-judge semantic evidence disagreement analysis
 - [x] ASR-preservation benchmark pack
 - [x] richer role/domain benchmark packs
-- [ ] versioned benchmark dataset + dataset cards
+- [x] versioned benchmark dataset + dataset cards
 - [ ] external interview-agent adapters beyond Nora
 
 ---
