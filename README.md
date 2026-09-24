@@ -102,6 +102,7 @@ VoxRubric turns these into explicit, machine-testable behaviors.
 | `code_switching` | Arabic/Latin code-switching in candidate turns |
 | `judge_agreement` | Cross-judge normalized score agreement |
 | `semantic_judge_disagreement` | Material score/evidence divergence across semantic judges |
+| `semantic_follow_up_quality` | Opt-in semantic relevance/grounding of declared follow-up questions |
 
 ## Governance & evidence
 
@@ -497,6 +498,20 @@ scorecard = judge.score(trace, rubric)
 
 The Ollama adapter uses the native local `/api/chat` contract while reusing the same strict rubric and literal-evidence validation.
 
+Opt-in semantic follow-up evaluation can use either judge implementation without changing the deterministic default evaluator:
+
+```python
+from voxrubric.metrics import SemanticFollowUpQualityMetric
+
+metric = SemanticFollowUpQualityMetric(
+    judge,
+    minimum_score=6,
+)
+result = metric.evaluate(trace, rubric)
+```
+
+The metric requires both a sufficient semantic score and literal evidence from the referenced parent candidate answer.
+
 ## Arena agent adapter
 
 ```python
@@ -648,7 +663,7 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 ## 🧭 Next
 
 - [x] local-model JudgeProvider reference adapter
-- [ ] semantic follow-up quality evaluator
+- [x] semantic follow-up quality evaluator
 - [x] multi-judge semantic evidence disagreement analysis
 - [ ] ASR-preservation benchmark pack
 - [ ] richer role/domain benchmark packs
