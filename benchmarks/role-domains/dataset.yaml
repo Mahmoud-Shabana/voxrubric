@@ -1,0 +1,51 @@
+schema_version: "1.0"
+id: voxrubric-role-domains
+version: 1.0.0
+title: VoxRubric Role and Domain Regression Set
+description: Synthetic interview traces across Customer Support, Data Analyst, and Site Reliability Engineering roles.
+license: Apache-2.0
+languages:
+  - en
+  - ar-SA
+domains:
+  - customer-support
+  - data-analysis
+  - site-reliability-engineering
+intended_use:
+  - Verify evaluator behavior across distinct occupational rubrics.
+  - Regression-test coverage, follow-up lineage, and bilingual fixtures.
+out_of_scope:
+  - Defining complete hiring rubrics for the represented roles.
+  - Comparing real candidates or demographic groups.
+source_policy: Hand-authored synthetic interview traces and rubrics.
+known_limitations:
+  - Only three domains with a small number of cases.
+  - Questions are regression fixtures, not validated selection instruments.
+card: DATASET_CARD.md
+files:
+  - path: customer-support-pack.yaml
+    role: suite
+  - path: data-analyst-pack.yaml
+    role: suite
+  - path: sre-pack.yaml
+    role: suite
+  - path: support-rubric.yaml
+    role: rubric
+  - path: data-analyst-rubric.yaml
+    role: rubric
+  - path: sre-rubric.yaml
+    role: rubric
+  - path: support-control.json
+    role: trace
+  - path: support-missing-documentation.json
+    role: trace
+  - path: data-analyst-control.json
+    role: trace
+  - path: data-analyst-broken-followup.json
+    role: trace
+  - path: sre-control.json
+    role: trace
+  - path: sre-missing-observability.json
+    role: trace
+  - path: README.md
+    role: documentation
