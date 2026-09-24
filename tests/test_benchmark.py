@@ -43,3 +43,23 @@ def test_semantic_calibration_pack_passes_expected_controls_and_failures():
         for suite in result.suites
         for case in suite.cases
     )
+
+
+
+def test_asr_preservation_pack_passes_expected_controls_and_failures():
+    directory = ROOT / "benchmarks/asr-preservation"
+    suites = discover_pack(directory)
+
+    assert [path.name for path in suites] == [
+        "asr-pack.yaml",
+    ]
+
+    result = run_pack(directory)
+    assert result.pack_id == "asr-preservation"
+    assert result.passed is True
+    assert len(result.suites) == 1
+    assert len(result.suites[0].cases) == 4
+    assert all(
+        case.passed
+        for case in result.suites[0].cases
+    )
