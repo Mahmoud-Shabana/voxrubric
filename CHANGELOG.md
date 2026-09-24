@@ -4,6 +4,15 @@ All notable VoxRubric changes are documented here.
 
 ## Unreleased — 0.5.0
 
+### Versioned benchmark datasets
+
+- Added semantic-versioned benchmark dataset manifests and dataset cards.
+- Added manifest validation for path safety, missing files, and optional SHA-256 checks.
+- Added deterministic content fingerprints spanning metadata, dataset cards, and inventoried files.
+- Added `validate-benchmark-dataset` CLI support.
+- Added manifests/cards for adversarial, semantic-calibration, ASR-preservation, and role-domain benchmark families.
+- Added regression tests for bundled manifests, traversal rejection, hash mismatches, and fingerprint changes.
+
 ### Role/domain benchmark coverage
 
 - Added Customer Support, Data Analyst, and Site Reliability Engineering benchmark packs.
