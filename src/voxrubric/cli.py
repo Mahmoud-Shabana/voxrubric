@@ -16,7 +16,7 @@ from .html_report import (
     write_trace_diff_html,
 )
 from .config import load_rubric, load_trace
-from .datasets import load_jsonl
+from .datasets import load_jsonl, validate_dataset_manifest
 from .report import to_markdown
 from .review_bundle import audit_review_bundle, load_review_bundle
 from .runner import default_evaluator
@@ -414,6 +414,45 @@ def validate_dataset(path: Path = typer.Argument(..., exists=True, readable=True
     traces = load_jsonl(path)
     turns = sum(len(t.turns) for t in traces)
     console.print(f"Valid: {len(traces)} sessions, {turns} turns")
+
+
+@app.command("validate-benchmark-dataset")
+def validate_benchmark_dataset(
+    manifest: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Benchmark dataset manifest YAML.",
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional JSON validation result path.",
+    ),
+) -> None:
+    result = validate_dataset_manifest(manifest)
+    status = "PASS" if result.valid else "FAIL"
+    console.print(
+        f"Dataset {result.dataset_id} {result.version}: {status}"
+    )
+    console.print(
+        f"Files checked: {result.files_checked}"
+    )
+    console.print(
+        f"Content SHA-256: {result.content_sha256}"
+    )
+    for problem in result.problems:
+        console.print(f"- {problem}")
+
+    if output:
+        output.write_text(
+            result.model_dump_json(indent=2),
+            encoding="utf-8",
+        )
+        console.print(f"Wrote {output}")
+
+    if not result.valid:
+        raise typer.Exit(code=1)
 
 
 if __name__ == "__main__":
