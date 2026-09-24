@@ -42,7 +42,7 @@ This file is the canonical release checklist. README roadmap items are descripti
 
 ### Gate 2 — Semantic evaluation depth
 
-- [ ] local-model JudgeProvider reference adapter
+- [x] local-model JudgeProvider reference adapter
 - [ ] semantic follow-up quality evaluator
 - [x] multi-judge semantic evidence disagreement analysis
 
