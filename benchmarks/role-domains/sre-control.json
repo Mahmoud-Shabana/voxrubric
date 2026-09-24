@@ -1,0 +1,46 @@
+{
+  "session_id": "sre-control",
+  "role": "Site Reliability Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "Walk through your first ten minutes of a production incident.",
+      "rubric_tags": ["incident_response"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I confirm impact, establish incident command, freeze risky changes, and create a shared timeline.",
+      "parent_turn_id": "q1"
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "Which telemetry would you use to distinguish dependency latency from application saturation?",
+      "parent_turn_id": "a1",
+      "rubric_tags": ["observability"]
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "I compare downstream latency, queue depth, CPU, event-loop lag, and request traces over the same window.",
+      "parent_turn_id": "q2"
+    },
+    {
+      "id": "q3",
+      "speaker": "interviewer",
+      "text": "What do you change after recovery to reduce recurrence?",
+      "parent_turn_id": "a2",
+      "rubric_tags": ["reliability"]
+    },
+    {
+      "id": "a3",
+      "speaker": "candidate",
+      "text": "I turn the failure mode into an SLO alert, add a load or chaos regression, and assign the durable fix.",
+      "parent_turn_id": "q3"
+    }
+  ],
+  "scorecards": []
+}
