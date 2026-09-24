@@ -1,0 +1,46 @@
+{
+  "session_id": "data-analyst-control",
+  "role": "Data Analyst",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "How would you calculate seven-day retained users in SQL?",
+      "rubric_tags": ["sql"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I would define the cohort date, join later activity on user_id, and count distinct users active on day seven.",
+      "parent_turn_id": "q1"
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "If retained users improved after a product change, what would stop you from calling that causal?",
+      "parent_turn_id": "a1",
+      "rubric_tags": ["experiment_design"]
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "Seasonality, selection effects, concurrent launches, and instrumentation changes could all confound the comparison.",
+      "parent_turn_id": "q2"
+    },
+    {
+      "id": "q3",
+      "speaker": "interviewer",
+      "text": "How would you present the result to a product lead?",
+      "parent_turn_id": "a2",
+      "rubric_tags": ["communication"]
+    },
+    {
+      "id": "a3",
+      "speaker": "candidate",
+      "text": "I would separate observed lift from causal claims, show uncertainty, and state the decision-relevant caveats.",
+      "parent_turn_id": "q3"
+    }
+  ],
+  "scorecards": []
+}
