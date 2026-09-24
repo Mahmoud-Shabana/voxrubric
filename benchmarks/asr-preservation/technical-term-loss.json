@@ -1,0 +1,21 @@
+{
+  "session_id": "asr-term-loss",
+  "role": "Backend Engineer",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "استخدمت FastAPI مع التخزين و circuit breaker في الإنتاج",
+      "metadata": {
+        "asr_reference_text": "استخدمت FastAPI مع Redis و circuit breaker في الإنتاج",
+        "asr_critical_terms": [
+          "FastAPI",
+          "Redis",
+          "circuit breaker"
+        ]
+      }
+    }
+  ],
+  "scorecards": []
+}
