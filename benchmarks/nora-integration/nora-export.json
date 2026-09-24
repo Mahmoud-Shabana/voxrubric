@@ -1,0 +1,175 @@
+{
+  "session_id": "nora-regression-001",
+  "role": "Backend Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "Describe a production incident you debugged.",
+      "parent_turn_id": null,
+      "rubric_tags": ["debugging"],
+      "response_latency_ms": 420,
+      "metadata": {
+        "question_lane": "anchor",
+        "decision_reason": "standardized debugging anchor"
+      }
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I reproduced the timeout, compared request traces with database latency, and isolated a blocking driver.",
+      "parent_turn_id": "q1",
+      "rubric_tags": [],
+      "response_latency_ms": null,
+      "metadata": {}
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "Which trace evidence made you reject the application-layer hypothesis?",
+      "parent_turn_id": "a1",
+      "rubric_tags": ["debugging"],
+      "response_latency_ms": 510,
+      "metadata": {
+        "question_lane": "adaptive",
+        "decision_reason": "investigate candidate evidence"
+      }
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "Database spans rose while application CPU and event-loop lag stayed stable, so the dependency path became the stronger hypothesis.",
+      "parent_turn_id": "q2",
+      "rubric_tags": [],
+      "response_latency_ms": null,
+      "metadata": {}
+    },
+    {
+      "id": "q3",
+      "speaker": "interviewer",
+      "text": "What system change reduced the chance of recurrence?",
+      "parent_turn_id": "a2",
+      "rubric_tags": ["systems"],
+      "response_latency_ms": 470,
+      "metadata": {
+        "question_lane": "anchor",
+        "decision_reason": "standardized systems anchor"
+      }
+    },
+    {
+      "id": "a3",
+      "speaker": "candidate",
+      "text": "We added bounded timeouts, a circuit breaker, and an SLO alert tied to dependency latency.",
+      "parent_turn_id": "q3",
+      "rubric_tags": [],
+      "response_latency_ms": null,
+      "metadata": {}
+    }
+  ],
+  "scorecards": [],
+  "metadata": {
+    "source": "nora-interviewer",
+    "job_id": "job-regression-001",
+    "candidate_ref": "candidate-regression",
+    "status": "completed",
+    "anchor_ratio_target": 0.5,
+    "anchor_turns": 2,
+    "interviewer_turns": 3,
+    "candidate_controls": [
+      {"kind": "thinking_time", "target_turn_id": "q2", "text": null},
+      {"kind": "resume", "target_turn_id": "q2", "text": null}
+    ],
+    "voice_events": [],
+    "evidence_judge_failures": [],
+    "audit_chain": {
+      "verified": true,
+      "head_hash": "aec8d6e7d51749143d72a18d27d776d84440f2d82a17dc9de83684320757f220",
+      "event_count": 13,
+      "hash_version": 1
+    },
+    "audit_events": [
+      {"seq":1,"type":"session_created","turn_id":null,"payload":{"_trace":{"correlation_id":"corr-00000001"}},"created_at":"2026-09-24T18:00:01Z","hash_version":1,"prev_hash":null,"event_hash":"044880b7df8e51b5b74495e5ddec6e851ec75795309b4d961050aec2fa87f824"},
+      {"seq":2,"type":"interviewer_turn","turn_id":"q1","payload":{"competency_tags":["debugging"],"_trace":{"correlation_id":"corr-00000002"}},"created_at":"2026-09-24T18:00:02Z","hash_version":1,"prev_hash":"044880b7df8e51b5b74495e5ddec6e851ec75795309b4d961050aec2fa87f824","event_hash":"fddb20fc88808e7c86e64db72dc3e1cbee96f4b80d235691a8d2e9cb9aa015a9"},
+      {"seq":3,"type":"candidate_turn","turn_id":"a1","payload":{"_trace":{"correlation_id":"corr-00000003"}},"created_at":"2026-09-24T18:00:03Z","hash_version":1,"prev_hash":"fddb20fc88808e7c86e64db72dc3e1cbee96f4b80d235691a8d2e9cb9aa015a9","event_hash":"be1ceccb1085f17d58c03bad4dc72a77b190491b6e90d7654ca039519ab690be"},
+      {"seq":4,"type":"candidate_control","turn_id":null,"payload":{"kind":"thinking_time","_trace":{"correlation_id":"corr-00000004"}},"created_at":"2026-09-24T18:00:04Z","hash_version":1,"prev_hash":"be1ceccb1085f17d58c03bad4dc72a77b190491b6e90d7654ca039519ab690be","event_hash":"aa0d4ac726e1bf93918729a56b31627a9bf0e790a7db666940ed5137dbfa0e60"},
+      {"seq":5,"type":"candidate_control","turn_id":null,"payload":{"kind":"resume","_trace":{"correlation_id":"corr-00000005"}},"created_at":"2026-09-24T18:00:05Z","hash_version":1,"prev_hash":"aa0d4ac726e1bf93918729a56b31627a9bf0e790a7db666940ed5137dbfa0e60","event_hash":"0bceac28e44df6756b976cf3d971c738d60ef46c961419661ccecbb4d8e328fe"},
+      {"seq":6,"type":"interviewer_turn","turn_id":"q2","payload":{"competency_tags":["debugging"],"_trace":{"correlation_id":"corr-00000006"}},"created_at":"2026-09-24T18:00:06Z","hash_version":1,"prev_hash":"0bceac28e44df6756b976cf3d971c738d60ef46c961419661ccecbb4d8e328fe","event_hash":"f1e2e7fb0a8b25f78b4e64c3b6345ce8ff5f001e1cbf6184240adb779a0998d5"},
+      {"seq":7,"type":"candidate_turn","turn_id":"a2","payload":{"_trace":{"correlation_id":"corr-00000007"}},"created_at":"2026-09-24T18:00:07Z","hash_version":1,"prev_hash":"f1e2e7fb0a8b25f78b4e64c3b6345ce8ff5f001e1cbf6184240adb779a0998d5","event_hash":"5a46a991b1c60fe325a0b7b685c516dc5bdec383428e5e52f57e7bfb22b8b792"},
+      {"seq":8,"type":"interviewer_turn","turn_id":"q3","payload":{"competency_tags":["systems"],"_trace":{"correlation_id":"corr-00000008"}},"created_at":"2026-09-24T18:00:08Z","hash_version":1,"prev_hash":"5a46a991b1c60fe325a0b7b685c516dc5bdec383428e5e52f57e7bfb22b8b792","event_hash":"982bdc7f40c9d06b01fde538712d89b7f63e66609394c9f41d5a7941e3e7f53b"},
+      {"seq":9,"type":"candidate_turn","turn_id":"a3","payload":{"_trace":{"correlation_id":"corr-00000009"}},"created_at":"2026-09-24T18:00:09Z","hash_version":1,"prev_hash":"982bdc7f40c9d06b01fde538712d89b7f63e66609394c9f41d5a7941e3e7f53b","event_hash":"6e84c5372345c7f4ac5a9ba9c5cfb677711e7bcee66b66bbe534d938e83539e5"},
+      {"seq":10,"type":"tool_opened","turn_id":null,"payload":{"tool_id":"tool-1","_trace":{"correlation_id":"corr-00000010"}},"created_at":"2026-09-24T18:00:10Z","hash_version":1,"prev_hash":"6e84c5372345c7f4ac5a9ba9c5cfb677711e7bcee66b66bbe534d938e83539e5","event_hash":"924e8fb6bc15528a1f9f77981005a8d7b107e27897be7fb40de213d8b3b73d13"},
+      {"seq":11,"type":"tool_submitted","turn_id":null,"payload":{"tool_id":"tool-1","submission_id":"sub-1","_trace":{"correlation_id":"corr-00000011"}},"created_at":"2026-09-24T18:00:11Z","hash_version":1,"prev_hash":"924e8fb6bc15528a1f9f77981005a8d7b107e27897be7fb40de213d8b3b73d13","event_hash":"05f72dd4cd765fd45429bcd60ceba47c478450413a44932a57cd3fb616ba118a"},
+      {"seq":12,"type":"tool_evaluated","turn_id":null,"payload":{"tool_id":"tool-1","submission_id":"sub-1","_trace":{"correlation_id":"corr-00000012"}},"created_at":"2026-09-24T18:00:12Z","hash_version":1,"prev_hash":"05f72dd4cd765fd45429bcd60ceba47c478450413a44932a57cd3fb616ba118a","event_hash":"a36d86bcb6afe6ae1c5333e7b6e6f48307d7d33834d4e21f89072da6855f9521"},
+      {"seq":13,"type":"session_completed","turn_id":null,"payload":{"_trace":{"correlation_id":"corr-00000013"}},"created_at":"2026-09-24T18:00:13Z","hash_version":1,"prev_hash":"a36d86bcb6afe6ae1c5333e7b6e6f48307d7d33834d4e21f89072da6855f9521","event_hash":"aec8d6e7d51749143d72a18d27d776d84440f2d82a17dc9de83684320757f220"}
+    ],
+    "evidence_graph": {
+      "debugging": {
+        "state": "demonstrated",
+        "evidence": [
+          {
+            "id": "ev-1",
+            "turn_id": "a1",
+            "state": "demonstrated",
+            "confidence": 0.9,
+            "quote": "compared request traces with database latency",
+            "note": "Candidate described a concrete diagnostic comparison.",
+            "source": "interview",
+            "active": true
+          }
+        ]
+      },
+      "systems": {
+        "state": "demonstrated",
+        "evidence": [
+          {
+            "id": "ev-2",
+            "turn_id": "a3",
+            "state": "demonstrated",
+            "confidence": 0.9,
+            "quote": "bounded timeouts, a circuit breaker",
+            "note": "Candidate described concrete recurrence controls.",
+            "source": "interview",
+            "active": true
+          }
+        ]
+      }
+    },
+    "evidence_judge_runs": [],
+    "transcript_revisions": [],
+    "appeals": [],
+    "integrity_level": "none",
+    "integrity_signals": [],
+    "tools": [
+      {
+        "id": "tool-1",
+        "kind": "case_study",
+        "status": "evaluated",
+        "payload": {
+          "prompt": "Prioritize the next reliability action."
+        }
+      }
+    ],
+    "tool_submissions": [
+      {
+        "id": "sub-1",
+        "tool_id": "tool-1",
+        "content": {
+          "answer": "Add dependency SLO alerting and bounded timeout policy."
+        }
+      }
+    ],
+    "tool_evaluations": [
+      {
+        "tool_id": "tool-1",
+        "submission_id": "sub-1",
+        "score": 0.9,
+        "summary": "Concrete reliability controls.",
+        "evidence": {
+          "review_required": false
+        }
+      }
+    ],
+    "event_count": 13
+  }
+}
