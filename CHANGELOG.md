@@ -4,6 +4,13 @@ All notable VoxRubric changes are documented here.
 
 ## Unreleased — 0.5.0
 
+### Release regression
+
+- Added a realistic Nora export regression fixture matching Nora's public VoxRubric payload shape.
+- Added end-to-end evaluation coverage for rubric coverage, follow-up lineage, dual-lane balance, candidate controls, evidence provenance, tool artifacts, audit-chain integrity, and correlation IDs.
+- Added a tamper regression proving exported audit-chain mutation is detected.
+- Added a CLI release-smoke test covering evaluation, adversarial benchmark execution, Arena execution, JSON output, and self-contained HTML report generation.
+
 ### Versioned benchmark datasets
 
 - Added semantic-versioned benchmark dataset manifests and dataset cards.
