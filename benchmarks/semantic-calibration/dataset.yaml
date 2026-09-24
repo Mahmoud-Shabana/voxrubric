@@ -1,0 +1,49 @@
+schema_version: "1.0"
+id: voxrubric-semantic-calibration
+version: 1.0.0
+title: VoxRubric Semantic Evidence Calibration Set
+description: Synthetic evidence-judge fixtures for state calibration, freshness, revisions, and failure handling.
+license: Apache-2.0
+languages:
+  - en
+domains:
+  - semantic-evidence
+  - evaluator-calibration
+intended_use:
+  - Regression-test semantic evidence state calibration.
+  - Verify stale, failed, and superseded judge runs are handled conservatively.
+out_of_scope:
+  - Calibrating a model for autonomous hiring decisions.
+  - Claiming population-level judge accuracy.
+source_policy: Hand-authored synthetic fixtures with benchmark-only gold labels.
+known_limitations:
+  - Gold labels cover a narrow set of evidence-state transitions.
+  - Confidence ranges are regression targets, not population-calibrated probabilities.
+card: DATASET_CARD.md
+files:
+  - path: state-pack.yaml
+    role: suite
+  - path: freshness-pack.yaml
+    role: suite
+  - path: rubric.yaml
+    role: rubric
+  - path: claimed.json
+    role: trace
+  - path: demonstrated.json
+    role: trace
+  - path: contradicted.json
+    role: trace
+  - path: insufficient.json
+    role: trace
+  - path: overclaim.json
+    role: trace
+  - path: underclaim.json
+    role: trace
+  - path: stale-after-correction.json
+    role: trace
+  - path: failed-latest-run.json
+    role: trace
+  - path: superseded-history-valid.json
+    role: trace
+  - path: README.md
+    role: documentation
