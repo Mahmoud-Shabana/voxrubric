@@ -460,6 +460,25 @@ class JudgeProvider(Protocol):
     ) -> InterviewScorecard: ...
 ```
 
+Reference hosted adapter:
+
+```bash
+python -m pip install -e '.[hosted]'
+```
+
+```python
+from voxrubric.providers import OpenAICompatibleJudgeProvider
+
+judge = OpenAICompatibleJudgeProvider(
+    base_url="https://provider.example/v1",
+    model="judge-model",
+    api_key="...",
+)
+scorecard = judge.score(trace, rubric)
+```
+
+The adapter rejects unknown or duplicate rubric dimensions and requires every evidence quote to be a literal substring of the referenced candidate turn.
+
 ## Arena agent adapter
 
 ```python
@@ -601,19 +620,22 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 - [x] CLI support
 - [x] CI smoke regression for benchmarks and Arena
 
+## ✅ Recently completed on main
+
+- [x] hosted-model JudgeProvider reference adapter
+- [x] statistical confidence intervals for Arena metric aggregates
+- [x] HTML comparison reports
+- [x] Nora Arena adapter
+
 ## 🧭 Next
 
-- [ ] hosted-model JudgeProvider reference adapter
 - [ ] local-model JudgeProvider reference adapter
 - [ ] semantic follow-up quality evaluator
 - [ ] multi-judge semantic evidence disagreement analysis
 - [ ] ASR-preservation benchmark pack
-- [ ] statistical confidence intervals
 - [ ] richer role/domain benchmark packs
-- [ ] HTML comparison report
 - [ ] versioned benchmark dataset + dataset cards
-- [ ] external interview-agent adapters
-- [ ] Nora Arena adapter
+- [ ] external interview-agent adapters beyond Nora
 
 ---
 
