@@ -1,0 +1,7 @@
+id: asr-preservation
+title: ASR Preservation Benchmark
+dimensions:
+  - id: communication
+    description: Preserve job-relevant technical speech in transcription.
+    weight: 1.0
+    required: true
