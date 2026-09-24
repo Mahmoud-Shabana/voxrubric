@@ -10,6 +10,14 @@ All notable VoxRubric changes are documented here.
 - Added per-dimension evidence Jaccard comparison and material-disagreement classification.
 - Added default evaluator integration and regression coverage for consensus, score divergence, evidence divergence, and single-judge non-applicability.
 
+### Local semantic judging
+
+- Added a strict Ollama `JudgeProvider` reference adapter using the native local chat endpoint.
+- Reused the hosted adapter's scorecard, dimension, and literal-evidence validation instead of maintaining two validation paths.
+- Added local-model timing/token provenance when Ollama returns it.
+- Added regression coverage for native request shape, custom endpoints, invalid response shapes, and fabricated evidence.
+- Added `hosted` and `local` optional dependency groups.
+
 ### Hosted semantic judging
 
 - Added a strict OpenAI-compatible `JudgeProvider` reference adapter.
