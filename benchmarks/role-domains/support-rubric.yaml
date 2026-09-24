@@ -1,0 +1,15 @@
+id: customer-support
+title: Customer Support Specialist
+dimensions:
+  - id: discovery
+    description: Clarifies the customer's problem and desired outcome.
+    weight: 1.0
+    required: true
+  - id: de_escalation
+    description: Handles frustrated customers calmly and constructively.
+    weight: 1.0
+    required: true
+  - id: documentation
+    description: Records resolution details for handoff and auditability.
+    weight: 1.0
+    required: true
