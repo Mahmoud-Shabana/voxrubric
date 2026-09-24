@@ -1,0 +1,15 @@
+id: sre
+title: Site Reliability Engineer
+dimensions:
+  - id: incident_response
+    description: Responds methodically to production incidents.
+    weight: 1.0
+    required: true
+  - id: observability
+    description: Uses telemetry to form and test hypotheses.
+    weight: 1.0
+    required: true
+  - id: reliability
+    description: Reduces recurrence with durable reliability controls.
+    weight: 1.0
+    required: true
