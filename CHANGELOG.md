@@ -4,6 +4,12 @@ All notable VoxRubric changes are documented here.
 
 ## Unreleased — 0.5.0
 
+### Semantic judge disagreement
+
+- Added descriptive cross-judge disagreement analysis for both normalized scores and evidence provenance.
+- Added per-dimension evidence Jaccard comparison and material-disagreement classification.
+- Added default evaluator integration and regression coverage for consensus, score divergence, evidence divergence, and single-judge non-applicability.
+
 ### Hosted semantic judging
 
 - Added a strict OpenAI-compatible `JudgeProvider` reference adapter.
