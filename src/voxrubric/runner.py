@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from .metrics import (
+    AsrPreservationMetric,
     AuditChainIntegrityMetric,
     AuditCorrelationIntegrityMetric,
     BargeInRecoveryMetric,
@@ -49,6 +50,7 @@ def default_evaluator(*, latency_budget_ms: int = 2000) -> Evaluator:
     return Evaluator(
         [
             EvidenceGroundingMetric(),
+            AsrPreservationMetric(),
             AuditChainIntegrityMetric(),
             AuditCorrelationIntegrityMetric(),
             RubricCoverageMetric(),
