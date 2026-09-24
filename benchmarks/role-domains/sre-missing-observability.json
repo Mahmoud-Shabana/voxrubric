@@ -1,0 +1,33 @@
+{
+  "session_id": "sre-missing-observability",
+  "role": "Site Reliability Engineer",
+  "locale": "en",
+  "turns": [
+    {
+      "id": "q1",
+      "speaker": "interviewer",
+      "text": "What do you do first during an outage?",
+      "rubric_tags": ["incident_response"]
+    },
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I establish impact and incident command.",
+      "parent_turn_id": "q1"
+    },
+    {
+      "id": "q2",
+      "speaker": "interviewer",
+      "text": "How do you stop the same failure recurring?",
+      "parent_turn_id": "a1",
+      "rubric_tags": ["reliability"]
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "I add a regression test and durable remediation owner.",
+      "parent_turn_id": "q2"
+    }
+  ],
+  "scorecards": []
+}
