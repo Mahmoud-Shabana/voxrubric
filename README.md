@@ -480,6 +480,23 @@ scorecard = judge.score(trace, rubric)
 
 The adapter rejects unknown or duplicate rubric dimensions and requires every evidence quote to be a literal substring of the referenced candidate turn.
 
+Local Ollama reference adapter:
+
+```bash
+python -m pip install -e '.[local]'
+```
+
+```python
+from voxrubric.providers import OllamaJudgeProvider
+
+judge = OllamaJudgeProvider(
+    model="qwen3:8b",
+)
+scorecard = judge.score(trace, rubric)
+```
+
+The Ollama adapter uses the native local `/api/chat` contract while reusing the same strict rubric and literal-evidence validation.
+
 ## Arena agent adapter
 
 ```python
@@ -630,7 +647,7 @@ CI is designed to catch both ordinary code regressions and evaluator-behavior re
 
 ## 🧭 Next
 
-- [ ] local-model JudgeProvider reference adapter
+- [x] local-model JudgeProvider reference adapter
 - [ ] semantic follow-up quality evaluator
 - [x] multi-judge semantic evidence disagreement analysis
 - [ ] ASR-preservation benchmark pack
