@@ -1,0 +1,38 @@
+schema_version: "1.0"
+id: voxrubric-asr-preservation
+version: 1.0.0
+title: VoxRubric Arabic-English Technical ASR Preservation Set
+description: Synthetic reference-vs-ASR transcript pairs for technical term and code-switch preservation.
+license: Apache-2.0
+languages:
+  - ar-SA
+  - en
+domains:
+  - speech-recognition
+  - technical-interviews
+intended_use:
+  - Regression-test ASR transcript preservation metrics.
+  - Verify Arabic-English technical code-switch and critical-term retention.
+out_of_scope:
+  - Ranking accents, dialects, or speakers.
+  - Estimating ASR performance for a population or provider.
+source_policy: Hand-authored synthetic transcript/reference pairs; no recorded voice or real applicant data.
+known_limitations:
+  - Small text-only fixture set with no acoustic variability.
+  - Does not model dialect breadth, microphone quality, or environmental noise.
+card: DATASET_CARD.md
+files:
+  - path: asr-pack.yaml
+    role: suite
+  - path: rubric.yaml
+    role: rubric
+  - path: normalized-control.json
+    role: trace
+  - path: technical-term-loss.json
+    role: trace
+  - path: code-switch-loss.json
+    role: trace
+  - path: multi-turn-control.json
+    role: trace
+  - path: README.md
+    role: documentation
