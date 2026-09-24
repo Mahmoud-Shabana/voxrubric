@@ -1,0 +1,24 @@
+id: customer-support-domain-v1
+title: Customer Support Domain
+cases:
+  - id: bilingual-support-control
+    description: Bilingual support interview covers discovery, de-escalation, and documentation with valid follow-ups.
+    trace: support-control.json
+    rubric: support-rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        passed: true
+        min_value: 1.0
+      - metric: follow_up_integrity
+        passed: true
+      - metric: code_switching
+        min_value: 0.3
+
+  - id: support-missing-documentation
+    description: Required documentation competency is never assessed.
+    trace: support-missing-documentation.json
+    rubric: support-rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        passed: false
+        max_value: 0.67
