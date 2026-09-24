@@ -80,3 +80,25 @@ Prefer cases that expose a single identifiable failure mode:
 - repeated judge runs that materially disagree.
 
 Avoid benchmark cases whose only difficulty is prompt length or obscure wording.
+
+
+## Versioned benchmark datasets
+
+Each bundled benchmark family can include a `dataset.yaml` manifest and `DATASET_CARD.md`.
+
+The manifest records:
+
+- semantic dataset version;
+- languages and domains;
+- intended and out-of-scope use;
+- source policy and known limitations;
+- explicit file inventory;
+- optional per-file SHA-256 hashes.
+
+Validate a dataset and compute its content fingerprint:
+
+```bash
+voxrubric validate-benchmark-dataset benchmarks/adversarial/dataset.yaml
+```
+
+The validator rejects parent-directory traversal, missing files, and declared SHA-256 mismatches. The returned content fingerprint changes when the manifest, card, or inventoried file content changes.
