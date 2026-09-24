@@ -1,0 +1,23 @@
+id: data-analyst-domain-v1
+title: Data Analyst Domain
+cases:
+  - id: analyst-control
+    description: Healthy analytical interview covers SQL, experiment design, and communication.
+    trace: data-analyst-control.json
+    rubric: data-analyst-rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        passed: true
+        min_value: 1.0
+      - metric: follow_up_integrity
+        passed: true
+
+  - id: analyst-broken-followup
+    description: A declared follow-up incorrectly points to an interviewer question instead of the candidate answer.
+    trace: data-analyst-broken-followup.json
+    rubric: data-analyst-rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        passed: true
+      - metric: follow_up_integrity
+        passed: false
