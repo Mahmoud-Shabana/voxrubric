@@ -2,6 +2,23 @@
 
 All notable VoxRubric changes are documented here.
 
+## Unreleased — 0.5.0
+
+### Hosted semantic judging
+
+- Added a strict OpenAI-compatible `JudgeProvider` reference adapter.
+- Added optional `hosted` dependency group for HTTP judge providers.
+- Rejects unknown, duplicate, or omitted rubric dimensions.
+- Requires evidence references to point to candidate turns.
+- Requires evidence quotes to be literal substrings of the referenced candidate turn.
+- Preserves provider/model provenance in the generated scorecard.
+- Added regression tests for valid responses, fabricated quotes, unknown dimensions, missing dimensions, fenced JSON, and invalid JSON.
+
+### Release process
+
+- Added a canonical v0.5 release checklist to prevent re-implementing capabilities already present on `main`.
+- Reconciled stale roadmap entries for Arena confidence intervals, HTML reporting, and the Nora adapter.
+
 ## 0.4.0 — 2026-09-23
 
 ### Arena
