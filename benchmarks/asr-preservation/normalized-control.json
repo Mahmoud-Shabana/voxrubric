@@ -1,0 +1,20 @@
+{
+  "session_id": "asr-exact",
+  "role": "Backend Engineer",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "واجهت مشكلة في fastapi service بسبب blocking database calls",
+      "metadata": {
+        "asr_reference_text": "واجهت مُشكلة في FastAPI service بسبب blocking database calls.",
+        "asr_critical_terms": [
+          "FastAPI",
+          "blocking database calls"
+        ]
+      }
+    }
+  ],
+  "scorecards": []
+}
