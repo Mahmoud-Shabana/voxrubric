@@ -1,0 +1,22 @@
+id: sre-domain-v1
+title: Site Reliability Engineering Domain
+cases:
+  - id: sre-control
+    description: Healthy SRE interview covers incident response, observability, and reliability.
+    trace: sre-control.json
+    rubric: sre-rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        passed: true
+        min_value: 1.0
+      - metric: follow_up_integrity
+        passed: true
+
+  - id: sre-missing-observability
+    description: Observability is required but never assessed.
+    trace: sre-missing-observability.json
+    rubric: sre-rubric.yaml
+    expectations:
+      - metric: rubric_coverage
+        passed: false
+        max_value: 0.67
