@@ -1,4 +1,5 @@
 from .agreement import JudgeAgreementMetric
+from .asr import AsrPreservationMetric
 from .audit_chain import AuditChainIntegrityMetric
 from .codeswitch import CodeSwitchMetric
 from .controls import CandidateControlRecoveryMetric
@@ -24,6 +25,7 @@ from .voice import (
 )
 
 __all__ = [
+    "AsrPreservationMetric",
     "AuditChainIntegrityMetric",
     "AuditCorrelationIntegrityMetric",
     "BargeInRecoveryMetric",
