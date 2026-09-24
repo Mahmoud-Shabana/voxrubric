@@ -1,0 +1,31 @@
+{
+  "session_id": "asr-multi-turn",
+  "role": "Site Reliability Engineer",
+  "locale": "ar-SA",
+  "turns": [
+    {
+      "id": "a1",
+      "speaker": "candidate",
+      "text": "I used Kubernetes with Redis",
+      "metadata": {
+        "asr_reference_text": "I used Kubernetes with Redis",
+        "asr_critical_terms": [
+          "Kubernetes",
+          "Redis"
+        ]
+      }
+    },
+    {
+      "id": "a2",
+      "speaker": "candidate",
+      "text": "ثم قست latency before deployment",
+      "metadata": {
+        "asr_reference_text": "ثم قست latency before deployment",
+        "asr_critical_terms": [
+          "latency"
+        ]
+      }
+    }
+  ],
+  "scorecards": []
+}
