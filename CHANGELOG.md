@@ -4,6 +4,14 @@ All notable VoxRubric changes are documented here.
 
 ## Unreleased — 0.5.0
 
+### ASR preservation
+
+- Added deterministic ASR preservation metric with normalized word error rate and word accuracy.
+- Added job-relevant critical-term recall checks.
+- Added Arabic/Latin code-switch preservation checks for mixed-language reference transcripts.
+- Added an Arabic/English technical ASR benchmark pack with healthy controls and expected-failure cases.
+- Added pack-level regression coverage.
+
 ### Semantic follow-up quality
 
 - Added an opt-in `SemanticFollowUpQualityMetric` backed by any `JudgeProvider`.
