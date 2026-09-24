@@ -1,0 +1,36 @@
+id: asr-preservation-v1
+title: Arabic/English Technical ASR Preservation
+cases:
+  - id: normalized-code-switch-control
+    description: Arabic diacritics and Latin casing differences should not count as ASR loss.
+    trace: normalized-control.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: asr_preservation
+        passed: true
+        min_value: 0.99
+
+  - id: technical-term-loss
+    description: Losing a job-relevant technical term must fail preservation even when most words survive.
+    trace: technical-term-loss.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: asr_preservation
+        passed: false
+
+  - id: code-switch-loss
+    description: Replacing all Latin technical language in a mixed-language answer must fail preservation.
+    trace: code-switch-loss.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: asr_preservation
+        passed: false
+
+  - id: multi-turn-control
+    description: Multiple accurate technical turns should aggregate without losing critical-term provenance.
+    trace: multi-turn-control.json
+    rubric: rubric.yaml
+    expectations:
+      - metric: asr_preservation
+        passed: true
+        min_value: 0.99
